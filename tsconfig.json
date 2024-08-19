@@ -14,7 +14,7 @@
       "@helpers": ["src/helpers/"],
       "@helpers/": ["src/helpers/"],
       "@helpers/*": ["src/helpers/*"],
-      "@navigate/*": ["src/navigate/*"],
+      "@nav/*": ["src/nav/*"],
       "@pages/*": ["src/pages/*"],
       "@stores/*": ["src/stores/*"],
       "@utils": ["src/utils/index"]

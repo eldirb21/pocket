@@ -24,7 +24,7 @@ module.exports = {
           '@hooks': ['./src/hooks'],
 
           // navigate
-          '@navigate': './src/navigate',
+          '@nav': './src/nav',
 
           // pages
           '@pages': './src/pages',
