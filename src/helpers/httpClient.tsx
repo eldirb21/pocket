@@ -1,14 +1,14 @@
-import { localstore } from "@/utils";
-import fetchMethod from "./fetchMethod";
-import responses from "./responses";
+import {localstore} from '@/utils';
+import fetchMethod from './fetchMethod';
+import responses from './responses';
 
 // Secured instance for API calls requiring a token
 const securedInstance = async (
   url: string,
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  body?: any
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  body?: any,
 ) => {
-  const token = await localstore.getStore("token");
+  const token = await localstore.getStore('token');
   return new Promise((resolve, reject) => {
     fetchMethod(url, method, body, {
       Authorization: `Bearer ${token}`,
@@ -31,8 +31,8 @@ const securedInstance = async (
 // Non-secured instance for API calls without token
 const nonSecuredInstance = (
   url: string,
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  body?: any
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  body?: any,
 ) => {
   return new Promise((resolve, reject) => {
     fetchMethod(url, method, body)
@@ -46,7 +46,7 @@ const nonSecuredInstance = (
         }
       })
       .catch((error: any) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
         reject(error);
       });
   });
@@ -56,19 +56,19 @@ const nonSecuredInstance = (
 const api = {
   post(url: string, reqBody?: any, needToken: boolean = true) {
     const instance = needToken ? securedInstance : nonSecuredInstance;
-    return instance(url, "POST", reqBody);
+    return instance(url, 'POST', reqBody);
   },
   get(url: string, reqBody?: any, needToken: boolean = true) {
     const instance = needToken ? securedInstance : nonSecuredInstance;
-    return instance(url, "GET", reqBody);
+    return instance(url, 'GET', reqBody);
   },
   delete(url: string, reqBody?: any, needToken: boolean = true) {
     const instance = needToken ? securedInstance : nonSecuredInstance;
-    return instance(url, "DELETE", reqBody);
+    return instance(url, 'DELETE', reqBody);
   },
   update(url: string, reqBody?: any, needToken: boolean = true) {
     const instance = needToken ? securedInstance : nonSecuredInstance;
-    return instance(url, "PUT", reqBody);
+    return instance(url, 'PUT', reqBody);
   },
 };
 

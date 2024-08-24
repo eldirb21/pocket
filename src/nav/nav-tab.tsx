@@ -1,19 +1,12 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {tabs} from './nav-data';
-import {
-  Animated,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {useEffect} from 'react';
-import {colors, fonts, moderateVerticalScale, verticalScale} from '@constants';
+import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {colors, fonts, moderateVerticalScale} from '@constants';
 import {
   StackCardInterpolatedStyle,
   StackCardInterpolationProps,
 } from '@react-navigation/stack';
-import {Icons, Texts} from '@atoms';
+import {Icons} from '@atoms';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,10 +26,6 @@ function TabBar({state, descriptors, navigation}: any) {
               : route.name;
 
           const isFocus = state.index === index;
-
-          useEffect(() => {
-            // useAnima(scaleAnim[index], isFocus ? 1.1 : 1);
-          }, [isFocus]);
 
           const onPress = () => {
             const event = navigation.emit({
@@ -188,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.white,
     padding: moderateVerticalScale(20),
-    paddingTop:moderateVerticalScale(10),
+    paddingTop: moderateVerticalScale(10),
 
     justifyContent: 'space-between',
     alignItems: 'center',

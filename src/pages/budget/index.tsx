@@ -1,15 +1,8 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import React, {useRef} from 'react';
 import {Appbar, Container, Floating, Icons, Texts} from '@atoms';
-import {
-  heightDimension,
-  moderateScale,
-  moderateVerticalScale,
-  scale,
-  widthDimension,
-} from '@constants';
-import {ItemBudget, ItemTransaction} from '@molecules';
-import * as Progress from 'react-native-progress';
+import {scale} from '@constants';
+import {ItemBudget} from '@molecules';
 import {datas, func} from '@utils';
 import BudgetForm from './budgetForm';
 
