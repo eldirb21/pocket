@@ -1,9 +1,8 @@
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {heightDimension, scale, verticalScale} from '@constants';
-import {Appbar, Container, Dropdowns, Icons, Texts} from '@atoms';
-import {Dropdown} from 'react-native-element-dropdown';
+import {Appbar, Buttons, Container, Dropdowns, Icons, TextInputs} from '@atoms';
 
 type Props = {
   refForm?: any;
@@ -22,14 +21,13 @@ const data = [
 
 const BudgetForm = ({refForm, ...res}: Props) => {
   const [value, setValue] = useState(null);
-  const [isFocus, setIsFocus] = useState(false);
 
-  const renderItem = item => {
+  const renderItem = (item: any) => {
     return (
       <View style={styles.item}>
         <Text style={styles.textItem}>{item.label}</Text>
         {item.value === value && (
-          <Icons style={styles.icon} color="black" name="Safety" size={20} />
+          <Icons color="black" name="Safety" size={20} />
         )}
       </View>
     );
@@ -48,14 +46,19 @@ const BudgetForm = ({refForm, ...res}: Props) => {
         title="New Budget"
         statusBarProps={{backgroundColor: '#c1c1c1'}}
       />
-      <Container style={{margin: scale(20)}}>
+      <Container style={styles.container}>
         <Dropdowns
+          title={'Categories'}
           data={data}
           renderItem={renderItem}
           labelField="label"
           valueField="value"
           onChange={() => {}}
         />
+
+        <TextInputs title="Notes" placeholder="Notes" multiline />
+
+        <Buttons title="Save" />
       </Container>
     </RBSheet>
   );
@@ -73,31 +76,21 @@ const customStyles = {
   draggableIcon: {
     backgroundColor: '#000',
   },
-  container: {},
+  container: {
+    backgroundColor: '#7F3DFF',
+  },
 };
 const customAvoidingViewProps = {
   enabled: false,
 };
 
 const styles = StyleSheet.create({
-  dropdown: {
-    margin: 16,
-    height: 50,
-    backgroundColor: 'red',
-    borderRadius: 12,
-    padding: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
-  },
-  icon: {
-    marginRight: 5,
+  container: {
+    padding: scale(20),
+    marginTop: verticalScale(100),
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: scale(25),
+    borderTopRightRadius: scale(25),
   },
   item: {
     padding: 17,
@@ -107,20 +100,6 @@ const styles = StyleSheet.create({
   },
   textItem: {
     flex: 1,
-    fontSize: 16,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  inputSearchStyle: {
-    height: 40,
     fontSize: 16,
   },
 });

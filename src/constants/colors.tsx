@@ -1,5 +1,5 @@
 const colors = {
-  tint:'#7F3DFF',
+  tint: '#7F3DFF',
   primary: '#14B0C9',
   secondary: '#B4B4B4',
   textPrimary: '#0F0A39',
@@ -17,5 +17,6 @@ const colors = {
   chatBackground: '#F4F4F4',
   chatFrombg: '#FFFFFF',
   chatTobg: '#ECEAEA',
+  error: '#f31010',
 };
 export default colors;
