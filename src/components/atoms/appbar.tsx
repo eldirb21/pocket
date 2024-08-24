@@ -161,9 +161,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   title: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: fonts.size.font14,
+    fontFamily: fonts.type.poppinsSemiBold,
     flex: 1,
   },
   arrowback: {

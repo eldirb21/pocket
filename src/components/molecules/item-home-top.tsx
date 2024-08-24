@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Icons, Texts} from '@atoms';
-import {fonts, scale} from '@constants';
+import {colors, fonts, scale} from '@constants';
 import {func} from '@utils';
 import {IcExpenses, IcIncome} from '@icons';
 
@@ -16,8 +16,20 @@ const ItemHomeTop = ({date, balance, expences, income}: Props) => {
   return (
     <View>
       <View style={styles.header}>
-        <Icons name="keyboard-arrow-down" size={fonts.size.font16} />
-        <Texts>{date}</Texts>
+        <Icons
+          type="Ionicons"
+          name="chevron-down"
+          size={fonts.size.font18}
+          color={colors.black}
+        />
+        <Texts
+          style={{
+            fontFamily: fonts.type.poppinsSemiBold,
+            fontSize: fonts.size.font14,
+            marginLeft: scale(5),
+          }}>
+          {date}
+        </Texts>
       </View>
       <View style={styles.container}>
         <View style={styles.balanceContainer}>
