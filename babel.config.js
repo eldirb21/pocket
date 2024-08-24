@@ -21,7 +21,8 @@ module.exports = {
           // helpers
           '@helpers': './src/helpers',
 
-          '@hooks': ['./src/hooks'],
+          // hooks
+          '@hooks': './src/hooks', // Updated from array to string
 
           // navigate
           '@nav': './src/nav',

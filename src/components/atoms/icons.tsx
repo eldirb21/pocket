@@ -34,7 +34,24 @@ type IconProps = React.ComponentProps<typeof Ionicons> &
 export default function Icons({
   type = 'MaterialIcons',
   ...props
-}: {type?: string} & IconProps) {
+}: {
+  type?:
+    | 'Ionicons'
+    | 'AntDesign'
+    | 'Feather'
+    | 'Entypo'
+    | 'FontAwesome'
+    | 'FontAwesome5'
+    | 'FontAwesome5Pro'
+    | 'Fontisto'
+    | 'EvilIcons'
+    | 'Foundation'
+    | 'Octicons'
+    | 'MaterialCommunityIcons'
+    | 'MaterialIcons'
+    | 'SimpleLineIcons'
+    | 'Zocial';
+} & IconProps) {
   switch (type) {
     case 'AntDesign':
       return <AntDesign {...props} />;

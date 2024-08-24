@@ -6,10 +6,10 @@ import OtpAuth from '@pages/auth/otpAuth';
 import AuthEmail from '@pages/auth/authEmail';
 import NavTabs from './nav-tab';
 import Home from '@pages/home';
-import HomeDetail from '@pages/home/home-detail';
 import Profile from '@pages/profile';
 import Budget from '@pages/budget';
 import Transaction from '@pages/transaction';
+import Account from '@pages/profile/account';
 
 const tabs = [
   {
@@ -31,37 +31,37 @@ const tabs = [
 ];
 
 const nav = [
-  {
-    path: 'Splash',
-    component: Splash,
-  },
-  {
-    path: 'Signin',
-    component: Signin,
-  },
-  {
-    path: 'Signup',
-    component: Signup,
-  },
-  {
-    path: 'Forgotpass',
-    component: Forgotpass,
-  },
-  {
-    path: 'OtpAuth',
-    component: OtpAuth,
-  },
-  {
-    path: 'AuthEmail',
-    component: AuthEmail,
-  },
+  // {
+  //   path: 'Splash',
+  //   component: Splash,
+  // },
+  // {
+  //   path: 'Signin',
+  //   component: Signin,
+  // },
+  // {
+  //   path: 'Signup',
+  //   component: Signup,
+  // },
+  // {
+  //   path: 'Forgotpass',
+  //   component: Forgotpass,
+  // },
+  // {
+  //   path: 'OtpAuth',
+  //   component: OtpAuth,
+  // },
+  // {
+  //   path: 'AuthEmail',
+  //   component: AuthEmail,
+  // },
   {
     path: 'NavTabs',
     component: NavTabs,
   },
   {
-    path: 'HomeDetail',
-    component: HomeDetail,
+    path: 'Account',
+    component: Account,
   },
 ];
 

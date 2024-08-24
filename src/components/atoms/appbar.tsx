@@ -10,12 +10,12 @@ import Texts from './texts';
 import Icons from './icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Avatar} from '@rneui/themed';
-import { fonts } from '@constants';
+import {fonts} from '@constants';
 
 type StatusBarProps = {
   animated?: boolean;
   backgroundColor?: string;
-  barStyle?: 'default' | 'light-content' | 'dark-content';
+  barStyle?: 'dark-content' | 'default' | 'light-content';
   showHideTransition?: 'fade' | 'slide';
   hidden?: boolean;
 };
@@ -29,6 +29,7 @@ type Props = {
   onMenu?: () => void; // Fungsi callback untuk ikon notifikasi
   onBarcode?: () => void;
   onCamera?: () => void;
+  onEdit?: () => void;
   centered?: boolean;
   avatar?: any;
 };
@@ -42,6 +43,7 @@ const Appbar: React.FC<Props> = ({
   onMenu,
   onBarcode,
   onCamera,
+  onEdit,
   centered,
   avatar,
 }) => {
@@ -125,10 +127,15 @@ const Appbar: React.FC<Props> = ({
             />
           </TouchableOpacity>
         )}
-        
+
         {onBarcode && (
           <TouchableOpacity onPress={onBarcode} style={styles.notif}>
             <Icons name={'qr-code-scanner'} size={25} color={'#000'} />
+          </TouchableOpacity>
+        )}
+        {onEdit && (
+          <TouchableOpacity onPress={onEdit} style={styles.notif}>
+            <Icons type="Feather" name={'edit'} size={25} color={'#000'} />
           </TouchableOpacity>
         )}
       </View>

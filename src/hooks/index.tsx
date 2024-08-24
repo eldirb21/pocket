@@ -1,4 +1,2 @@
-import useAnimation from './useAnimation'
-export {
-    useAnimation
-}
+import useAnimation from './useAnimation';
+export {useAnimation};

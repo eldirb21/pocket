@@ -1,16 +1,14 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@atoms": ["src/components/atoms/index"],
       "@molecules": ["src/components/molecules/index"],
       "@icons": ["src/assets/icons"],
       "@images": ["src/assets/images/index"],
       "@constants": ["src/constants/index"],
-      "@hooks": ["src/hooks/index"],
+      "@hooks/*": ["src/hooks/*"],
       "@helpers": ["src/helpers/"],
       "@helpers/": ["src/helpers/"],
       "@helpers/*": ["src/helpers/*"],

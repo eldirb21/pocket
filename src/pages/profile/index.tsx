@@ -1,15 +1,17 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {Appbar, Container, Icons, Texts} from '@atoms';
 import {Avatar} from '@rneui/themed';
-import {colors, fonts, moderateScale, scale} from '@constants';
+import {colors, fonts, scale} from '@constants';
 
-type Props = {};
+type Props = {
+  [x: string]: any;
+};
 
 const Profile = (props: Props) => {
   return (
     <Container>
-      <Appbar title="Profile" onCamera={() => {}} onMenu={() => {}} />
+      <Appbar title="Profile" centered onEdit={() => {}} />
 
       <View
         style={{
@@ -32,10 +34,12 @@ const Profile = (props: Props) => {
         <View
           style={{
             marginTop: scale(10),
+            alignItems: 'center',
           }}>
           <Texts
             style={{
               fontWeight: '700',
+              marginBottom: 5,
             }}>
             Tom Cruise
           </Texts>
@@ -43,128 +47,67 @@ const Profile = (props: Props) => {
             style={{
               color: colors.textGrey,
             }}>
-            @tomcruise
+            082342424223343
           </Texts>
         </View>
-
-        <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '55%',
-              marginTop: scale(15),
-            }}>
-            <View
-              style={{
-                padding: 4,
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 1,
-                borderColor: colors.borderColor,
-                borderRadius: 8,
-                width: scale(80),
-              }}>
-              <Icons
-                type="AntDesign"
-                name="message1"
-                size={fonts.size.font14}
-              />
-              <Texts style={{color: '#000', marginLeft: scale(4)}}>
-                Message
-              </Texts>
-            </View>
-            <View
-              style={{
-                backgroundColor: colors.tint,
-                borderRadius: 8,
-                padding: 4,
-                paddingHorizontal: 10,
-                width: scale(80),
-                alignItems: 'center',
-              }}>
-              <Texts style={{color: '#FFF'}}>Follow</Texts>
-            </View>
-          </View>
-        </View>
       </View>
 
       <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '80%',
-          alignSelf: 'center',
-        }}>
-        {[
-          {
-            totalFollow: 1300,
-            label: 'Post',
-          },
-          {
-            totalFollow: 1300,
-            label: 'Followers',
-          },
-          {
-            totalFollow: 1300,
-            label: 'Following',
-          },
-        ].map((x, i) => {
-          return (
-            <View
-              style={{
-                borderRadius: scale(8),
-                width: moderateScale(90),
-                borderWidth: 1,
-                borderColor: colors.borderColor,
-                padding: 10,
-                alignItems: 'center',
-              }}
-              key={i}>
-              <Texts
-                style={{
-                  fontSize: fonts.size.font14,
-                  textAlign: 'center',
-                  fontWeight: '600',
-                }}>
-                6.3k
-              </Texts>
-              <Texts style={{color: colors.textTertiary}}>{x.label}</Texts>
-            </View>
-          );
-        })}
-      </View>
-
-      <View
-        style={{
-          width: 0,
-          height: 0,
-          backgroundColor: 'transparent',
-          borderStyle: 'solid',
-          borderLeftWidth: 15,
-          borderRightWidth: 15,
-          borderBottomWidth: 10,
-          borderLeftColor: 'transparent',
-          borderRightColor: 'transparent',
-          borderBottomColor: colors.gray,
-          zIndex: -9999,
-          alignSelf: 'center',
-          marginTop: scale(6),
-        }}
-      />
-      <Container
         style={{
           backgroundColor: colors.gray,
           flex: 1,
+          padding: scale(20),
+          paddingTop: 0,
         }}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Texts>No Post</Texts>
-        </View>
-      </Container>
+        {[
+          {
+            icon: 'wallet-outline',
+            label: 'Account',
+          },
+          {
+            type: 'AntDesign',
+            icon: 'upload',
+            label: 'Export Data',
+          },
+          {
+            icon: 'language',
+            label: 'Language',
+          },
+          {
+            icon: 'moon-outline',
+            label: 'Mode',
+          },
+          {type: 'AntDesign', icon: 'logout', label: 'Logout'},
+        ].map((item, index) => {
+          return (
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate(item.label)}
+              key={index}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: scale(10),
+                borderBottomWidth: 1,
+                borderColor: colors.borderColor,
+              }}>
+              <View
+                style={{
+                  backgroundColor: 'grey',
+                  padding: scale(10),
+                  borderRadius: 10,
+                  marginRight: scale(10),
+                }}>
+                <Icons
+                  type={item?.type || 'Ionicons'}
+                  name={item.icon}
+                  size={fonts.size.font20}
+                />
+              </View>
+              <Texts>{item.label}</Texts>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </Container>
   );
 };
