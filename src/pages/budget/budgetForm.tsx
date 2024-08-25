@@ -1,8 +1,16 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {heightDimension, scale, verticalScale} from '@constants';
-import {Appbar, Buttons, Container, Dropdowns, Icons, TextInputs} from '@atoms';
+import {fonts, heightDimension, scale, verticalScale} from '@constants';
+import {
+  Appbar,
+  Buttons,
+  Container,
+  Dropdowns,
+  Icons,
+  TextInputs,
+  Texts,
+} from '@atoms';
 
 type Props = {
   refForm?: any;
@@ -47,7 +55,13 @@ const BudgetForm = ({refForm, ...res}: Props) => {
         statusBarProps={{backgroundColor: '#c1c1c1'}}
       />
       <Container style={styles.container}>
+        <View style={styles.head}>
+          <Texts style={styles.headText}>Budget</Texts>
+        </View>
         <Dropdowns
+          containerStyle={{
+            marginBottom: 20,
+          }}
           title={'Categories'}
           data={data}
           renderItem={renderItem}
@@ -56,7 +70,14 @@ const BudgetForm = ({refForm, ...res}: Props) => {
           onChange={() => {}}
         />
 
-        <TextInputs title="Notes" placeholder="Notes" multiline />
+        <TextInputs
+          containerStyle={{
+            marginBottom: 20,
+          }}
+          title="Notes"
+          placeholder="Notes"
+          multiline
+        />
 
         <Buttons title="Save" />
       </Container>
@@ -91,6 +112,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderTopLeftRadius: scale(25),
     borderTopRightRadius: scale(25),
+  },
+  head: {
+    alignItems: 'center',
+    marginBottom: scale(20),
+  },
+  headText: {
+    fontFamily: fonts.type.poppinsSemiBold,
   },
   item: {
     padding: 17,

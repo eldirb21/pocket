@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Texts from './texts';
-import {colors, fonts} from '@constants';
+import {colors, fonts, verticalScale} from '@constants';
 import Icons from './icons';
 
 interface TextInputsProps extends TextInputProps {
@@ -16,79 +16,30 @@ interface TextInputsProps extends TextInputProps {
   title?: string;
   error?: string;
   secureText?: boolean;
-  style?: any;
-  checked?: boolean;
-  value?: any;
-  forgotPass?: any;
-  onForgotPass?: () => void;
-  onChangeText?: (item: any) => void;
-  placeholder?: string;
-  autoCorrect?: boolean;
   custom?: any;
   textStyle?: any;
-  multiline?: boolean;
-  inputStyle?: any;
-  required?: boolean;
-  textAlignVertical?: any;
   keyboardType?: any;
-  editable?: any;
 }
 
 const TextInputs: React.FC<TextInputsProps> = ({
-  style,
   title,
   error,
   secureText,
-  checked,
-  forgotPass,
-  value,
-  onForgotPass,
-  onChangeText,
-  placeholder,
-  autoCorrect,
   custom,
   textStyle,
-  multiline = false,
-  inputStyle,
   containerStyle,
-  required,
-  textAlignVertical = 'auto',
   keyboardType = 'text',
-  editable = true,
   ...res
 }) => {
   const [showText, setshowText] = useState(true);
   return (
-    <View style={style}>
-      {title && (
-        <Texts style={textStyle}>
-          {title} {required && <Texts style={{color: colors.error}}>*</Texts>}
-        </Texts>
-      )}
-      <View
-        style={[
-          {
-            flexDirection: 'row',
-            borderBottomWidth: 1,
-            borderColor: error ? colors.error : colors.borderColor,
-          },
-          containerStyle,
-        ]}>
+    <View style={containerStyle}>
+      {title && <Texts style={textStyle}>{title}</Texts>}
+      <View style={styles.container}>
         <TextInput
           secureTextEntry={secureText ? showText : false}
-          style={[
-            styles.input,
-            inputStyle,
-            {color: error ? colors.error : colors.black},
-          ]}
-          placeholder={placeholder}
-          value={value}
-          autoCorrect={autoCorrect}
-          onChangeText={onChangeText}
-          multiline={multiline}
-          textAlignVertical={textAlignVertical}
+          style={[styles.input, {color: error ? colors.error : colors.black}]}
           keyboardType={keyboardType}
-          editable={editable}
           {...res}
         />
         {secureText && (
@@ -96,29 +47,15 @@ const TextInputs: React.FC<TextInputsProps> = ({
             onPress={() => setshowText(!showText)}
             activeOpacity={0.9}
             style={styles.icon}>
-            {/* {showText ? <IcEyeOpen /> : <IcEyeClose />} */}
-          </TouchableOpacity>
-        )}
-        {forgotPass && (
-          <TouchableOpacity
-            onPress={onForgotPass}
-            activeOpacity={0.9}
-            style={styles.icon}>
-            <Texts style={styles.underline}>{'Forgot'}</Texts>
+            <Icons
+              type="Ionicons"
+              name={showText ? 'eye-outline' : 'eye-off-outline'}
+              size={fonts.size.font16}
+              color={colors.textGrey}
+            />
           </TouchableOpacity>
         )}
         {custom}
-        {checked && (
-          <View style={styles.icon}>
-            {value ? (
-              // !error ? (
-              //   <IcCheck />
-              // ) : (
-              <Icons name="close" size={18} color={colors.error} />
-            ) : // )
-            null}
-          </View>
-        )}
       </View>
       {error && <Texts style={styles.error}>{error}</Texts>}
     </View>
@@ -128,6 +65,14 @@ const TextInputs: React.FC<TextInputsProps> = ({
 export default TextInputs;
 
 const styles = StyleSheet.create({
+  container: {
+    height: verticalScale(40),
+    backgroundColor: '#FFF',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: colors.borderColor,
+  },
   input: {
     fontFamily: fonts.type.poppinsRegular,
     fontSize: fonts.size.font14,
@@ -143,8 +88,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 15,
-  },
-  underline: {
-    textDecorationLine: 'underline',
   },
 });

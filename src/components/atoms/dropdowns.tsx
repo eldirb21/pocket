@@ -15,16 +15,22 @@ type Props = DropdownProps<DropdownItem | any> & {
   onChange?: (item?: any) => void;
   title?: any;
   textStyle?: any;
+  containerStyle?: any;
 };
 const Dropdowns: React.FC<Props> = ({
   data,
   title,
   textStyle,
   onChange = () => {},
+  containerStyle,
   ...res
 }) => {
+
+  const ahaha=()=>{
+    
+  }
   return (
-    <View>
+    <View style={containerStyle}>
       {title && <Texts style={textStyle}>{title}</Texts>}
       <Dropdown
         data={data}
@@ -39,10 +45,10 @@ const Dropdowns: React.FC<Props> = ({
         onChange={onChange}
         renderRightIcon={() => (
           <Icons
-            type="AntDesign"
+            type="Ionicons"
             style={styles.icon}
-            color="black"
-            name="Safety"
+            color={colors.textGrey}
+            name="chevron-down"
             size={20}
           />
         )}
@@ -60,15 +66,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 12,
     paddingHorizontal: 12,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: colors.borderColor,
   },
   icon: {
     marginRight: 5,

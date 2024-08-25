@@ -55,14 +55,8 @@ const TransactionForm = ({refForm, ...res}: Props) => {
         statusBarProps={{backgroundColor: '#c1c1c1'}}
       />
       <Container style={styles.container}>
-        <View
-          style={{
-            alignItems: 'center',
-            marginBottom: scale(20),
-          }}>
-          <Texts style={{fontFamily: fonts.type.poppinsSemiBold}}>
-            Transactions
-          </Texts>
+        <View style={styles.head}>
+          <Texts style={styles.headText}>Transactions</Texts>
         </View>
         <Dropdowns
           title={'Types'}
@@ -117,6 +111,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderTopLeftRadius: scale(25),
     borderTopRightRadius: scale(25),
+  },
+  head: {
+    alignItems: 'center',
+    marginBottom: scale(20),
+  },
+  headText: {
+    fontFamily: fonts.type.poppinsSemiBold,
   },
 
   item: {
