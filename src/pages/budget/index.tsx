@@ -7,6 +7,7 @@ import {datas, func} from '@utils';
 import BudgetForm from './budgetForm';
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
+import {useIsFocused} from '@react-navigation/native';
 
 type Props = {
   [x: string]: any;
@@ -14,13 +15,16 @@ type Props = {
 
 const Budget = (props: Props) => {
   const refForm = useRef<any>(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    props.getListBudget({
-      page: 1,
-      pageSize: 10,
-    });
-  }, []);
+    if (isFocused) {
+      props.getListBudget({
+        page: 1,
+        pageSize: 10,
+      });
+    }
+  }, [isFocused]);
 
   const renderItem = ({item, index}: any) => {
     const results = func.budget(item.budgetExhausted, item.nominal);

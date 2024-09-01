@@ -37,7 +37,7 @@ const ItemTransaction = ({
       </View>
       <View style={{flex: 1}}>
         <Texts style={styles.subject}>{subject}</Texts>
-        <Texts>{desc}</Texts>
+        <Texts style={{textTransform: 'capitalize'}}>{desc}</Texts>
       </View>
       <View style={styles.right}>
         <Texts
@@ -45,9 +45,9 @@ const ItemTransaction = ({
             color: func.category(category)?.color,
             ...styles.nominal,
           }}>
-          {func.numbToRupiah(nominal)}
+          Rp.{func.numbToRupiah(nominal)}
         </Texts>
-        <Texts>{moment(date).format('hh:mm A')}</Texts>
+        <Texts>{moment(date).format('hh:mma')}</Texts>
       </View>
     </TouchableOpacity>
   );
@@ -63,11 +63,12 @@ const styles = StyleSheet.create({
   },
   nominal: {
     fontFamily: fonts.type.poppinsMedium,
-    marginBottom: 5,
+    marginBottom: 0,
   },
   right: {alignItems: 'flex-end'},
   subject: {
     fontFamily: fonts.type.poppinsMedium,
-    marginBottom: 5,
+    textTransform: 'capitalize',
+    marginBottom: 0,
   },
 });

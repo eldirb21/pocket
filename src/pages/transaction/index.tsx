@@ -3,25 +3,26 @@ import React, {useEffect} from 'react';
 import {Appbar, Container} from '@atoms';
 import {scale} from '@constants';
 import {ItemTransaction} from '@molecules';
-import {datas} from '@utils';
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
+import {useIsFocused} from '@react-navigation/native';
 
 type Props = {
   [x: string]: any;
 };
 
 const Transaction = (props: Props) => {
+  const isFocused = useIsFocused();
+  const {transactions} = props.transaction;
   useEffect(() => {
-    props.getListTransaction({
-      page: 1,
-      pageSize: 10, 
-    });
-  }, []);
+    if (isFocused) {
+      props.getListTransaction({
+        page: 1,
+        pageSize: 10,
+      });
+    }
+  }, [isFocused]);
 
-  console.log('====================================');
-  console.log('');
-  console.log('====================================');
   const renderItem = ({item, index}: any) => {
     return (
       <ItemTransaction
@@ -29,7 +30,7 @@ const Transaction = (props: Props) => {
         onPress={() => props.navigation.navigate('')}
         subject={item.subject}
         desc={item.desc}
-        nominal={item.nominal}
+        nominal={item.total_with_fee}
         date={item.date}
         type={item.type}
         category={item.category}
@@ -41,12 +42,10 @@ const Transaction = (props: Props) => {
       <Appbar title="Transaction" onSearch={() => {}} />
 
       <FlatList
-        data={datas.transaction}
+        data={transactions?.items}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
-        contentContainerStyle={{
-          padding: scale(15),
-        }}
+        contentContainerStyle={styles.list}
       />
     </Container>
   );
@@ -61,5 +60,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 3,
     elevation: 5,
+  },
+  list: {
+    padding: scale(15),
   },
 });

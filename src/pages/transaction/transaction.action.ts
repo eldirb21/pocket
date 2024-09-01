@@ -6,7 +6,7 @@ const getListTransaction = (obj: any) => async (dispatch: any) => {
   dispatchLoad(dispatch, _.GET_LIST, []);
   const res: any = await TransactionService.getAll(obj);
   if (res.status === 200) {
-    dispatchSuccess(dispatch, _.GET_LIST, res);
+    dispatchSuccess(dispatch, _.GET_LIST, res?.data);
   } else {
     dispatchError(dispatch, _.GET_LIST, res);
   }
