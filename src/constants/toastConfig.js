@@ -1,124 +1,62 @@
 import {colors, fonts, fontType, scale} from '@constants';
-import {Popup, SPSheet, Toast} from 'react-native-popup-confirm-toast';
-import {Icons, Texts} from '@atoms';
+import {Icons, Texts, Popup, SPSheet, Toast} from '@atoms';
 import {View} from 'react-native';
 
-export const toasts = {
-  success(message, title, isbottom = false) {
+const toasts = {
+  success({message, title, bottom = false}) {
     Toast.show({
-      icon: <Icons name="home" />,
-      title: title ? title : 'Success',
-
-      text: message || 'success!',
-      backgroundColor: colors.successBg,
-      timeColor: 'transparent',
-      timing: 0,
-
-      position: isbottom ? 'bottom' : 'top',
-      statusBarType: 'light-content',
-
-      titleTextStyle: {
-        fontFamily: fontType.medium,
-        fontSize: fonts.font12,
-        color: colors.success,
-        padding: 0,
-        margin: 0,
-      },
-      descTextStyle: {
-        fontFamily: fontType.regular,
-        fontSize: fonts.font12,
-        color: colors.success,
-        padding: 0,
-        margin: 0,
-      },
+      title: title,
+      text: message,
+      backgroundColor: '#22bb33',
+      isTiming: false,
+      icon: <Icons name={'check'} color={'#fff'} size={32} />,
+      position: bottom ? 'bottom' : 'top',
     });
   },
-  error(message, title, isbottom = false) {
+  error({message, title, bottom = false}) {
     Toast.show({
-      icon: <Icons name="home" />,
-      title: title ? title : 'Failed',
-      text: message || 'error!',
-      backgroundColor: colors.errorBg,
-      timeColor: 'transparent',
-      timing: 0,
-      position: isbottom ? 'bottom' : 'top',
-      statusBarType: 'light-content',
-
-      titleTextStyle: {
-        fontFamily: fontType.medium,
-        fontSize: fonts.font12,
-        color: colors.error,
-        padding: 0,
-        margin: 0,
-      },
-      descTextStyle: {
-        fontFamily: fontType.regular,
-        fontSize: fonts.font12,
-        color: colors.error,
-        padding: 0,
-        margin: 0,
-      },
+      title: title,
+      text: message,
+      backgroundColor: '#bb2124',
+      isTiming: false,
+      icon: (
+        <Icons type="Ionicons" name={'close-circle'} color={'#fff'} size={32} />
+      ),
+      position: bottom ? 'bottom' : 'top',
     });
   },
-  info(message, title, isbottom = false) {
+  info({message, title, bottom = false}) {
     Toast.show({
+      title: title,
+      text: message,
+      backgroundColor: '#aaaaaa',
+      isTiming: false,
       icon: (
         <Icons
           type="MaterialCommunityIcons"
-          name="information-variant"
-          color={colors.info}
-          size={fonts.font26}
+          name={'information-variant'}
+          color={'#fff'}
+          size={32}
         />
       ),
-      title: title ? title : 'Info',
-      text: message || 'info!',
-      backgroundColor: colors.infoBg,
-      timeColor: 'transparent',
-      timing: 0,
-      position: isbottom ? 'bottom' : 'top',
-      statusBarType: 'light-content',
-
-      titleTextStyle: {
-        fontFamily: fontType.medium,
-        fontSize: fonts.font12,
-        color: colors.info,
-        padding: 0,
-        margin: 0,
-      },
-      descTextStyle: {
-        fontFamily: fontType.regular,
-        fontSize: fonts.font12,
-        color: colors.info,
-        padding: 0,
-        margin: 0,
-      },
+      position: bottom ? 'bottom' : 'top',
     });
   },
-  warning(message, title, isbottom = false) {
+  warning({message, title, bottom = false}) {
     Toast.show({
-      icon: <Icons name="home" />,
-      title: title ? title : 'Warning',
-      text: message || 'warning!',
-      backgroundColor: colors.warningBg,
-      timeColor: 'transparent',
-      timing: 0,
-      position: isbottom ? 'bottom' : 'top',
-      statusBarType: 'light-content',
-
-      titleTextStyle: {
-        fontFamily: fontType.medium,
-        fontSize: fonts.font12,
-        color: colors.warning,
-        padding: 0,
-        margin: 0,
-      },
-      descTextStyle: {
-        fontFamily: fontType.regular,
-        fontSize: fonts.font12,
-        color: colors.warning,
-        padding: 0,
-        margin: 0,
-      },
+      title: title,
+      text: message,
+      backgroundColor: '#f0ad4e',
+      isTiming: false,
+      icon: (
+        <Icons
+          type="Ionicons"
+          name={'warning-outline'}
+          color={'#fff'}
+          size={32}
+        />
+      ),
+      position: bottom ? 'bottom' : 'top',
     });
   },
   popup(
@@ -198,3 +136,5 @@ export const toasts = {
     });
   },
 };
+
+export default toasts;

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {fonts, heightDimension, scale, verticalScale} from '@constants';
+import {fonts, heightDimension, scale, toasts, verticalScale} from '@constants';
 import {Appbar, Buttons, Container, Dropdowns, TextInputs, Texts} from '@atoms';
 import DatePicker from 'react-native-date-picker';
 import {func} from '@utils';
@@ -42,6 +42,11 @@ const TransactionForm = ({refForm, ...res}: Props) => {
 
   const handleSubmit = () => {
     console.log(Inputs);
+    toasts.success({
+      title: 'Success!',
+      message: 'Login successfully.',
+      bottom: true,
+    });
   };
 
   return (
@@ -52,11 +57,14 @@ const TransactionForm = ({refForm, ...res}: Props) => {
       customStyles={{
         wrapper: {
           backgroundColor: 'transparent',
+          zIndex: -9999,
         },
         draggableIcon: {
           backgroundColor: '#000',
+          zIndex: -9999,
         },
         container: {
+          zIndex: -9999,
           backgroundColor:
             (Inputs.type === 'Income' && '#00A86B') ||
             (Inputs.type === 'Expenses' && '#FD3C4A') ||

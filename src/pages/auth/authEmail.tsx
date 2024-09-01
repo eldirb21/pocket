@@ -1,12 +1,13 @@
 import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Buttons, Container, Spinner, TextInputs, Texts} from '@atoms';
+import {Buttons, Container, Spinner, TextInputs} from '@atoms';
 import {
   fonts,
   heightDimension,
   moderateScale,
   moderateVerticalScale,
   scale,
+  toasts,
   verticalScale,
   widthDimension,
 } from '@constants';
@@ -27,7 +28,13 @@ const AuthEmail = (props: Props) => {
 
   useEffect(() => {
     if (!loading && logon) {
-      props.navigation.replace('NavTabs');
+      toasts.success({
+        title: 'Success!',
+        message: 'Login successfully.',
+      });
+      setTimeout(() => {
+        props.navigation.replace('NavTabs');
+      }, 800);
     }
   }, [loading, logon]);
 
