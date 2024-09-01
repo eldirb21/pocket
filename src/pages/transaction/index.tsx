@@ -1,15 +1,27 @@
 import {FlatList, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Appbar, Container} from '@atoms';
 import {scale} from '@constants';
 import {ItemTransaction} from '@molecules';
-import { datas } from '@utils';
+import {datas} from '@utils';
+import {connect} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
 
 type Props = {
   [x: string]: any;
 };
 
 const Transaction = (props: Props) => {
+  useEffect(() => {
+    props.getListTransaction({
+      page: 1,
+      pageSize: 10, 
+    });
+  }, []);
+
+  console.log('====================================');
+  console.log('');
+  console.log('====================================');
   const renderItem = ({item, index}: any) => {
     return (
       <ItemTransaction
@@ -40,7 +52,7 @@ const Transaction = (props: Props) => {
   );
 };
 
-export default Transaction;
+export default connect(mapStateToProps, mapDispatchToProps)(Transaction);
 
 const styles = StyleSheet.create({
   shadow: {

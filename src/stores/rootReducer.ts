@@ -1,8 +1,12 @@
 import {combineReducers} from '@reduxjs/toolkit';
 
 import authReducers from '../pages/auth/auth.reducer';
+import transactionReducer from '@pages/transaction/transaction.reducer';
+import budgetReducer from '@pages/budget/budget.reducer';
 const appReducer = combineReducers({
   authReducers,
+  transactionReducer,
+  budgetReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

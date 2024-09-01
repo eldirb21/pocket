@@ -1,10 +1,12 @@
 import {FlatList, StyleSheet, View} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Appbar, Container, Floating, Icons, Texts} from '@atoms';
 import {scale} from '@constants';
 import {ItemBudget} from '@molecules';
 import {datas, func} from '@utils';
 import BudgetForm from './budgetForm';
+import {connect} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
 
 type Props = {
   [x: string]: any;
@@ -12,6 +14,13 @@ type Props = {
 
 const Budget = (props: Props) => {
   const refForm = useRef<any>(null);
+
+  useEffect(() => {
+    props.getListBudget({
+      page: 1,
+      pageSize: 10,
+    });
+  }, []);
 
   const renderItem = ({item, index}: any) => {
     const results = func.budget(item.budgetExhausted, item.nominal);
@@ -60,6 +69,6 @@ const Budget = (props: Props) => {
   );
 };
 
-export default Budget;
+export default connect(mapStateToProps, mapDispatchToProps)(Budget);
 
 const styles = StyleSheet.create({});
