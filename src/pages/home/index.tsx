@@ -1,16 +1,20 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Container, Floating, Texts} from '@atoms';
 import {fonts, scale} from '@constants';
 import {datas} from '@utils';
 import {ItemHomeTop, ItemTransaction} from '@molecules';
 import TransactionForm from '@pages/transaction/transactionForm';
+import {connect} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
 
 type Props = {
   [x: string]: any;
 };
 const Home = (props: Props) => {
   const refForm = useRef<any>(null);
+
+  useEffect(() => {}, []);
 
   return (
     <Container>
@@ -61,7 +65,7 @@ const Home = (props: Props) => {
   );
 };
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const styles = StyleSheet.create({
   containerList: {

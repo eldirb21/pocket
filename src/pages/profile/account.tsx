@@ -1,10 +1,11 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useRef} from 'react';
-import {Appbar, Buttons, Container, Icons, Texts} from '@atoms';
+import {Appbar, Buttons, Container, Icons, RBSheet, Texts} from '@atoms';
 import {colors, fonts, heightDimension, scale} from '@constants';
-import RBSheet from 'react-native-raw-bottom-sheet';
 
-type Props = {};
+type Props = {
+  [x: string]: any;
+};
 
 const Account = (props: Props) => {
   const refRBSheet = useRef();

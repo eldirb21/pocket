@@ -1,6 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import {fonts, heightDimension, scale, verticalScale} from '@constants';
 import {
   Appbar,
@@ -8,6 +7,7 @@ import {
   Container,
   Dropdowns,
   Icons,
+  RBSheet,
   TextInputs,
   Texts,
 } from '@atoms';

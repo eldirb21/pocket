@@ -13,14 +13,14 @@ export default (state = initialState, actions: any) => {
         ...state,
         loading: actions.load,
         logon: actions.payload,
-        error: actions.error?.errors,
+        error: actions.error?.errors || null,
       };
     case _.LOGIN:
       return {
         ...state,
         loading: actions.load,
         logon: actions.payload,
-        error: actions.error?.errors,
+        error: actions.error?.errors || null,
       };
     default:
       return state;
