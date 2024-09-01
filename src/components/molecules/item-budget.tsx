@@ -25,6 +25,7 @@ const ItemBudget = ({
   persen,
   remain,
 }: Props) => {
+  const progres: any = parseFloat(persen)?.toFixed(2);
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.card}>
       <View style={styles.title}>
@@ -35,12 +36,12 @@ const ItemBudget = ({
 
       <Progress.Bar
         height={moderateVerticalScale(8)}
-        progress={persen}
+        progress={progres}
         width={(widthDimension * 90) / 100}
         color={minus ? 'red' : 'blue'}
       />
 
-      <Texts>
+      <Texts style={{marginTop: 4}}>
         Rp{func.numbToRupiah(budgetExhausted)} of Rp
         {func.numbToRupiah(nominal)}
       </Texts>

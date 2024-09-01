@@ -16,6 +16,11 @@ type Props = {
 const Budget = (props: Props) => {
   const refForm = useRef<any>(null);
   const isFocused = useIsFocused();
+  const {budget} = props.budget;
+
+  // console.log('====================================');
+  // console.log(budget);
+  // console.log('====================================');
 
   useEffect(() => {
     if (isFocused) {
@@ -58,7 +63,7 @@ const Budget = (props: Props) => {
       </View>
 
       <FlatList
-        data={datas.budget}
+        data={budget?.items}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         contentContainerStyle={{

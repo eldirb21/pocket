@@ -62,7 +62,7 @@ const func = {
     }
   },
   budget(a: any, b: any) {
-    const persen = parseFloat(a) / parseFloat(b);
+    const persen = parseFloat(a) / parseFloat(b)||0;
     const remain = b - a;
     let result = {
       persen,
