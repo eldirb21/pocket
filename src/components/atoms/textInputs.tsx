@@ -19,6 +19,10 @@ interface TextInputsProps extends TextInputProps {
   custom?: any;
   textStyle?: any;
   keyboardType?: any;
+  type?: 'button' | 'input';
+  placeholder?: any;
+  value?: any;
+  onPress?: () => void;
 }
 
 const TextInputs: React.FC<TextInputsProps> = ({
@@ -29,6 +33,10 @@ const TextInputs: React.FC<TextInputsProps> = ({
   textStyle,
   containerStyle,
   keyboardType = 'text',
+  type = 'input',
+  placeholder,
+  value,
+  onPress,
   ...res
 }) => {
   const [showText, setshowText] = useState(true);
@@ -36,12 +44,26 @@ const TextInputs: React.FC<TextInputsProps> = ({
     <View style={containerStyle}>
       {title && <Texts style={textStyle}>{title}</Texts>}
       <View style={styles.container}>
-        <TextInput
-          secureTextEntry={secureText ? showText : false}
-          style={[styles.input, {color: error ? colors.error : colors.black}]}
-          keyboardType={keyboardType}
-          {...res}
-        />
+        {type === 'input' ? (
+          <TextInput
+            secureTextEntry={secureText ? showText : false}
+            style={[
+              styles.input,
+              {color: error ? colors.error : colors.textTertiary},
+            ]}
+            keyboardType={keyboardType}
+            placeholder={placeholder}
+            value={value}
+            {...res}
+          />
+        ) : (
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={onPress}
+            style={styles.btn}>
+            <Texts style={styles.text}>{value ? value : placeholder}</Texts>
+          </TouchableOpacity>
+        )}
         {secureText && (
           <TouchableOpacity
             onPress={() => setshowText(!showText)}
@@ -88,5 +110,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 15,
+  },
+  text: {
+    color: colors.textTertiary,
+  },
+  btn: {
+    justifyContent: 'center',
+    height: '100%',
   },
 });

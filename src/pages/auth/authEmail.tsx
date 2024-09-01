@@ -1,21 +1,50 @@
-import {StyleSheet, View} from 'react-native';
-import React from 'react';
-import {Buttons, Container, Texts} from '@atoms';
+import {KeyboardAvoidingView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Buttons, Container, Spinner, TextInputs, Texts} from '@atoms';
 import {
   fonts,
   heightDimension,
   moderateScale,
   moderateVerticalScale,
   scale,
+  verticalScale,
   widthDimension,
 } from '@constants';
 import {IcIogoIllustration} from '@icons';
+import {connect} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
 
 type Props = {
   [x: string]: any;
 };
 
 const AuthEmail = (props: Props) => {
+  const {logon, error, loading} = props.logon;
+  const [Inputs, setInputs] = useState<any>({
+    email: 'eldirb95@gmail.com',
+    password: '87654321',
+  });
+
+  useEffect(() => {
+    if (!loading && logon) {
+      props.navigation.replace('NavTabs');
+    }
+  }, [loading, logon]);
+
+  const handleChange = (key: string, value: any) => {
+    const newInput: any = {...Inputs};
+    newInput[key] = value;
+    setInputs(newInput);
+  };
+
+  const isEmty = () => {
+    const input = Object.keys(Inputs).some(key => Inputs[key] === '');
+    return input;
+  };
+
+  const handlerLogin = () => {
+    props.doLogon(Inputs);
+  };
   return (
     <Container
       style={[
@@ -28,27 +57,39 @@ const AuthEmail = (props: Props) => {
           flex: 1,
         },
       ]}>
+      <Spinner visible={loading} />
       <View style={styles.logo}>
         <IcIogoIllustration />
       </View>
-      <View
-        style={[
-          widthDimension > heightDimension && {width: moderateScale(350)},
-          {alignItems: 'center'},
-        ]}>
-        <Texts style={styles.title}>Signin with Email</Texts>
+      <KeyboardAvoidingView style={[{width: '100%'}]}>
+        <TextInputs
+          placeholder={'Email'}
+          value={Inputs.email}
+          onChangeText={val => handleChange('email', val)}
+          containerStyle={styles.input}
+        />
+        <TextInputs
+          placeholder={'Password'}
+          value={Inputs.password}
+          onChangeText={val => handleChange('password', val)}
+          containerStyle={styles.input}
+        />
+
         <Buttons
+          style={{marginTop: verticalScale(20)}}
+          disabled={isEmty()}
+          loading={loading}
           shadow
           type="full"
           title="Login"
-          onPress={() => props.navigation.replace('NavTabs')}
+          onPress={handlerLogin}
         />
-      </View>
+      </KeyboardAvoidingView>
     </Container>
   );
 };
 
-export default AuthEmail;
+export default connect(mapStateToProps, mapDispatchToProps)(AuthEmail);
 
 const styles = StyleSheet.create({
   container: {
@@ -68,5 +109,8 @@ const styles = StyleSheet.create({
     marginBottom: scale(20),
     fontSize: fonts.size.font18,
     fontWeight: '900',
+  },
+  input: {
+    marginBottom: scale(10),
   },
 });

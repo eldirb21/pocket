@@ -3,6 +3,21 @@ module.exports = {
   plugins: [
     'react-native-reanimated/plugin',
     [
+      'module:react-native-dotenv',
+      {
+        envName: 'APP_ENV',
+        moduleName: '@env',
+        path: '.env',
+        blocklist: null,
+        allowlist: null,
+        blacklist: null, // DEPRECATED
+        whitelist: null, // DEPRECATED
+        safe: false,
+        allowUndefined: true,
+        verbose: false,
+      },
+    ],
+    [
       'module-resolver',
       {
         root: ['.'],
@@ -20,6 +35,7 @@ module.exports = {
 
           // helpers
           '@helpers': './src/helpers',
+          '@services': './src/services',
 
           // hooks
           '@hooks': './src/hooks', // Updated from array to string

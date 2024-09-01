@@ -18,5 +18,7 @@ const colors = {
   chatFrombg: '#FFFFFF',
   chatTobg: '#ECEAEA',
   error: '#f31010',
+
+  overley:'rgba(0,0,0,0.5)'
 };
 export default colors;

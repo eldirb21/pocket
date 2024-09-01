@@ -1,3 +1,4 @@
 import func from './func';
 import datas from './data';
-export {func, datas};
+import localstore from './localstore';
+export {func, datas, localstore};

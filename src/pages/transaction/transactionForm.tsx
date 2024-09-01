@@ -1,16 +1,17 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {fonts, heightDimension, scale, verticalScale} from '@constants';
-import {
-  Appbar,
-  Buttons,
-  Container,
-  Dropdowns,
-  Icons,
-  TextInputs,
-  Texts,
-} from '@atoms';
+import {Appbar, Buttons, Container, Dropdowns, TextInputs, Texts} from '@atoms';
+import DatePicker from 'react-native-date-picker';
+import {func} from '@utils';
+import moment from 'moment-timezone';
 
 type Props = {
   refForm?: any;
@@ -29,24 +30,39 @@ const categories = [
 ];
 
 const TransactionForm = ({refForm, ...res}: Props) => {
-  const [value, setValue] = useState(null);
+  const [openDate, setopenDate] = useState(false);
+  const [Inputs, setInputs] = useState<any>({
+    categories: '',
+    amount: '',
+    notes: '',
+    type: '',
+    createAt: new Date(),
+    date: new Date(),
+  });
 
-  const renderItem = (item: any) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === value && (
-          <Icons color="black" name="Safety" size={20} />
-        )}
-      </View>
-    );
+  const handleSubmit = () => {
+    console.log(Inputs);
   };
+
   return (
     <RBSheet
       ref={refForm}
       useNativeDriver={false}
       height={heightDimension}
-      customStyles={customStyles}
+      customStyles={{
+        wrapper: {
+          backgroundColor: 'transparent',
+        },
+        draggableIcon: {
+          backgroundColor: '#000',
+        },
+        container: {
+          backgroundColor:
+            (Inputs.type === 'Income' && '#00A86B') ||
+            (Inputs.type === 'Expenses' && '#FD3C4A') ||
+            '#7F3DFF',
+        },
+      }}
       customModalProps={customModalProps}
       customAvoidingViewProps={customAvoidingViewProps}>
       <Appbar
@@ -54,31 +70,71 @@ const TransactionForm = ({refForm, ...res}: Props) => {
         title="New Transaction"
         statusBarProps={{backgroundColor: '#c1c1c1'}}
       />
-      <Container style={styles.container}>
-        <View style={styles.head}>
-          <Texts style={styles.headText}>Transactions</Texts>
-        </View>
-        <Dropdowns
-          title={'Types'}
-          data={types}
-          renderItem={renderItem}
-          labelField="label"
-          valueField="value"
-          onChange={() => {}}
-        />
-        <Dropdowns
-          title={'Categories'}
-          data={categories}
-          renderItem={renderItem}
-          labelField="label"
-          valueField="value"
-          onChange={() => {}}
-        />
+      <KeyboardAvoidingView style={{flex: 1}}>
+        <Container style={styles.container} scrolled>
+          <View style={styles.head}>
+            <Texts style={styles.headText}>Transactions</Texts>
+          </View>
+          <Dropdowns
+            containerStyle={styles.inputs}
+            title={'Types'}
+            data={types}
+            labelField="label"
+            valueField="value"
+            onChange={val => setInputs({...Inputs, type: val.label})}
+          />
+          <Dropdowns
+            containerStyle={styles.inputs}
+            title={'Categories'}
+            data={categories}
+            labelField="label"
+            valueField="value"
+            onChange={val => setInputs({...Inputs, categories: val.label})}
+          />
 
-        <TextInputs title="Notes" placeholder="Notes" multiline />
+          <TextInputs
+            type="button"
+            containerStyle={styles.inputs}
+            title="Date"
+            placeholder="21-04-2024 08:08"
+            editable={false}
+            value={moment(Inputs.date).format('DD-MM-yyyy h:mm')}
+            onPress={() => setopenDate(true)}
+          />
 
-        <Buttons title="Save" />
-      </Container>
+          <TextInputs
+            containerStyle={styles.inputs}
+            title="Amount"
+            placeholder="Amount"
+            multiline
+            value={Inputs.amount}
+            onChangeText={val => setInputs({...Inputs, amount: val})}
+          />
+
+          <TextInputs
+            containerStyle={styles.inputs}
+            title="Notes"
+            numberOfLines={2}
+            placeholder="Notes"
+            multiline
+            value={Inputs.notes}
+            onChangeText={val => setInputs({...Inputs, notes: val})}
+          />
+
+          <Buttons title="Save" onPress={handleSubmit} />
+
+          <DatePicker
+            modal={openDate}
+            open={openDate}
+            date={Inputs.date}
+            onConfirm={date => {
+              setopenDate(false);
+              setInputs({...Inputs, date: date});
+            }}
+            onCancel={() => setopenDate(false)}
+          />
+        </Container>
+      </KeyboardAvoidingView>
     </RBSheet>
   );
 };
@@ -89,17 +145,7 @@ const customModalProps: any = {
   animationType: 'slide',
   statusBarTranslucent: false,
 };
-const customStyles = {
-  wrapper: {
-    backgroundColor: 'transparent',
-  },
-  draggableIcon: {
-    backgroundColor: '#000',
-  },
-  container: {
-    backgroundColor: '#7F3DFF',
-  },
-};
+
 const customAvoidingViewProps = {
   enabled: false,
 };
@@ -119,7 +165,6 @@ const styles = StyleSheet.create({
   headText: {
     fontFamily: fonts.type.poppinsSemiBold,
   },
-
   item: {
     padding: 17,
     flexDirection: 'row',
@@ -129,5 +174,8 @@ const styles = StyleSheet.create({
   textItem: {
     flex: 1,
     fontSize: 16,
+  },
+  inputs: {
+    marginBottom: 20,
   },
 });

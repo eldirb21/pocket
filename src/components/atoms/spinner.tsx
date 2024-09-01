@@ -18,7 +18,7 @@ const Spinner = (props: Props) => {
           {
             backgroundColor: props?.bgColor
               ? props?.bgColor
-              : colors.backgroundColor,
+              : colors.overley,
           },
         ]}>
         <ActivityIndicator size={fonts.size.font30} color={colors.white} />

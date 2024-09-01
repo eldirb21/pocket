@@ -28,17 +28,14 @@ const data = [
 ];
 
 const BudgetForm = ({refForm, ...res}: Props) => {
-  const [value, setValue] = useState(null);
+  const [Inputs, setInputs] = useState<any>({
+    categories: '',
+    nominal: '',
+    notes: '',
+  });
 
-  const renderItem = (item: any) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.textItem}>{item.label}</Text>
-        {item.value === value && (
-          <Icons color="black" name="Safety" size={20} />
-        )}
-      </View>
-    );
+  const handleSubmit = () => {
+    console.log(Inputs);
   };
 
   return (
@@ -59,27 +56,22 @@ const BudgetForm = ({refForm, ...res}: Props) => {
           <Texts style={styles.headText}>Budget</Texts>
         </View>
         <Dropdowns
-          containerStyle={{
-            marginBottom: 20,
-          }}
+          containerStyle={styles.inputs}
           title={'Categories'}
           data={data}
-          renderItem={renderItem}
           labelField="label"
           valueField="value"
-          onChange={() => {}}
+          onChange={val => setInputs({...Inputs, categories: val.label})}
         />
 
         <TextInputs
-          containerStyle={{
-            marginBottom: 20,
-          }}
+          containerStyle={styles.inputs}
           title="Notes"
           placeholder="Notes"
           multiline
         />
 
-        <Buttons title="Save" />
+        <Buttons title="Save" onPress={handleSubmit} />
       </Container>
     </RBSheet>
   );
@@ -129,5 +121,8 @@ const styles = StyleSheet.create({
   textItem: {
     flex: 1,
     fontSize: 16,
+  },
+  inputs: {
+    marginBottom: 20,
   },
 });

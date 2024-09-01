@@ -51,10 +51,10 @@ const nav = [
   //   path: 'OtpAuth',
   //   component: OtpAuth,
   // },
-  // {
-  //   path: 'AuthEmail',
-  //   component: AuthEmail,
-  // },
+  {
+    path: 'AuthEmail',
+    component: AuthEmail,
+  },
   {
     path: 'NavTabs',
     component: NavTabs,
