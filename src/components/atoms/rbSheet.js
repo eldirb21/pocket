@@ -12,9 +12,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-// Creating the RBSheet component
 const RBSheet = forwardRef((props, ref) => {
-  // Props destructuring
   const {
     height = 260,
     openDuration = 300,
@@ -113,13 +111,6 @@ const RBSheet = forwardRef((props, ref) => {
         }
       });
     }
-  };
-  const onToast = () => {
-    toasts.success({
-      title: 'Success!',
-      message: 'Login successfully.',
-      bottom: true,
-    });
   };
 
   // Returning the RBSheet component
