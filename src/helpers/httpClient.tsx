@@ -16,7 +16,6 @@ const securedInstance = async (
         resolve(response);
       })
       .catch((error: any) => {
-        console.log(error);
         reject(error);
       });
   });

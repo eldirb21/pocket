@@ -6,9 +6,16 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import {fonts, heightDimension, scale, toasts, verticalScale} from '@constants';
-import {Appbar, Buttons, Container, Dropdowns, TextInputs, Texts} from '@atoms';
+import {
+  Appbar,
+  Buttons,
+  Container,
+  Dropdowns,
+  RBSheet,
+  TextInputs,
+  Texts,
+} from '@atoms';
 import DatePicker from 'react-native-date-picker';
 import {func} from '@utils';
 import moment from 'moment-timezone';
@@ -41,7 +48,7 @@ const TransactionForm = ({refForm, ...res}: Props) => {
   });
 
   const handleSubmit = () => {
-    console.log(Inputs);
+    // console.log(Inputs);
     toasts.success({
       title: 'Success!',
       message: 'Login successfully.',
@@ -64,7 +71,7 @@ const TransactionForm = ({refForm, ...res}: Props) => {
           zIndex: -9999,
         },
         container: {
-          zIndex: -9999,
+          zIndex: 2,
           backgroundColor:
             (Inputs.type === 'Income' && '#00A86B') ||
             (Inputs.type === 'Expenses' && '#FD3C4A') ||

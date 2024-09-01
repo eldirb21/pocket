@@ -13,6 +13,7 @@ import Popup from './toast/popup';
 import SPSheet from './toast/spsheet';
 import NetworkDebug from './networkDebug';
 import Drag from './drag';
+import RBSheet from './rbSheet';
 export {
   Buttons,
   Container,
@@ -29,4 +30,5 @@ export {
   Root,
   NetworkDebug,
   Drag,
+  RBSheet,
 };

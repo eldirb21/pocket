@@ -4,6 +4,7 @@ import {
   Animated,
   Dimensions,
   Easing,
+  Modal,
   Platform,
   StatusBar,
   StyleSheet,
@@ -29,6 +30,7 @@ class Toast extends Component {
         : Dimensions.get('window').width;
     this.defaultState = {
       color: defaultColor,
+      modalVisible: false,
       timeColor: defaultTimeColor,
       isTiming: false,
       position: defaultPosition,
@@ -84,6 +86,7 @@ class Toast extends Component {
       this.setState(
         {
           ...this.defaultState,
+          modalVisible: true,
           title: config.title || false,
           text: config.text || false,
           titleTextStyle: config.titleTextStyle || false,
@@ -173,6 +176,9 @@ class Toast extends Component {
   hideToast() {
     if (typeof this.state.onClose === 'function') {
       this.state.onClose();
+      this.setState({
+        modalVisible: false,
+      });
     }
     const {minHeight, onCloseComplete} = this.state;
     let toValue = 0;
@@ -199,6 +205,7 @@ class Toast extends Component {
           statusBarTranslucent: false,
           statusBarHidden: false,
           starting: false,
+          modalVisible: false,
           toast: new Animated.Value(-(this.getHeight() + this.getBarHeight())),
         },
         () => {
@@ -217,6 +224,7 @@ class Toast extends Component {
 
   render() {
     let {
+      modalVisible,
       title,
       text,
       icon,
@@ -236,7 +244,6 @@ class Toast extends Component {
       statusBarAndroidHidden,
       statusBarAppleHidden,
     } = this.state;
-
     if (
       ((Platform.OS === 'android' && statusBarAndroidHidden === true) ||
         (Platform.OS === 'ios' && statusBarAppleHidden === true)) &&
@@ -263,7 +270,7 @@ class Toast extends Component {
     }
 
     return (
-      <>
+      <Modal testID="Modal" transparent visible={modalVisible}>
         {starting && (
           <StatusBar
             hidden={statusBarHidden}
@@ -277,7 +284,7 @@ class Toast extends Component {
           style={[
             styles.toast,
             {
-              zIndex:9999999,
+              zIndex: 999,
               width: this.width,
               minHeight: minHeight / 1.5,
               backgroundColor: backgroundColor,
@@ -330,7 +337,7 @@ class Toast extends Component {
             )}
           </Animated.View>
         </Animated.View>
-      </>
+      </Modal>
     );
   }
 }
@@ -352,7 +359,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     flexDirection: 'row',
     borderWidth: 0,
-    zIndex: 999999,
+    zIndex: 6,
   },
   timing: {
     height: 5,
