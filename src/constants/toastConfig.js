@@ -3,20 +3,20 @@ import {Icons, Texts, Popup, SPSheet, Toast} from '@atoms';
 import {View} from 'react-native';
 
 const toasts = {
-  success({message, title, bottom = false}) {
+  success(message, title, bottom = false) {
     Toast.show({
-      title: title,
-      text: message,
+      title: title || 'Success',
+      text: message || 'Request successfully',
       backgroundColor: '#22bb33',
       isTiming: false,
       icon: <Icons name={'check'} color={'#fff'} size={32} />,
       position: bottom ? 'bottom' : 'top',
     });
   },
-  error({message, title, bottom = false}) {
+  error(message, title, bottom = false) {
     Toast.show({
-      title: title,
-      text: message,
+      title: title || 'Failed',
+      text: message || 'Something want wrong',
       backgroundColor: '#bb2124',
       isTiming: false,
       icon: (
@@ -25,10 +25,10 @@ const toasts = {
       position: bottom ? 'bottom' : 'top',
     });
   },
-  info({message, title, bottom = false}) {
+  info(message, title, bottom = false) {
     Toast.show({
-      title: title,
-      text: message,
+      title: title || 'Info',
+      text: message || 'Something want wrong',
       backgroundColor: '#aaaaaa',
       isTiming: false,
       icon: (
@@ -42,10 +42,10 @@ const toasts = {
       position: bottom ? 'bottom' : 'top',
     });
   },
-  warning({message, title, bottom = false}) {
+  warning(message, title, bottom = false) {
     Toast.show({
-      title: title,
-      text: message,
+      title: title || 'Warning',
+      text: message || 'Something want wrong',
       backgroundColor: '#f0ad4e',
       isTiming: false,
       icon: (

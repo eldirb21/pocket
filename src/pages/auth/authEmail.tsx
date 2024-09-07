@@ -27,16 +27,16 @@ const AuthEmail = (props: Props) => {
   });
 
   useEffect(() => {
-    if (!loading && logon) {
-      toasts.success({
-        title: 'Success!',
-        message: 'Login successfully.',
-      });
+    if (!loading && logon?.status === 200) {
+      toasts.success('Login successfully.');
       setTimeout(() => {
         props.navigation.replace('NavTabs');
       }, 800);
     }
-  }, [loading, logon]);
+    if (!loading && logon?.status !== 200) {
+      toasts.error(error, 'Login Failed.');
+    }
+  }, [loading, logon?.status]);
 
   const handleChange = (key: string, value: any) => {
     const newInput: any = {...Inputs};

@@ -19,8 +19,11 @@ import {
 import DatePicker from 'react-native-date-picker';
 import {func} from '@utils';
 import moment from 'moment-timezone';
+import {connect} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
 
 type Props = {
+  [x: string]: any;
   refForm?: any;
 };
 
@@ -36,7 +39,10 @@ const categories = [
   {label: 'Education', value: '5'},
 ];
 
-const TransactionForm = ({refForm, ...res}: Props) => {
+const TransactionForm = ({refForm, ...props}: Props) => {
+  const {loading, error} = props.transaction;
+  // console.log('props.transaction', props.transaction);
+
   const [openDate, setopenDate] = useState(false);
   const [Inputs, setInputs] = useState<any>({
     categories: '',
@@ -49,43 +55,37 @@ const TransactionForm = ({refForm, ...res}: Props) => {
 
   const handleSubmit = () => {
     // console.log(Inputs);
-    toasts.success({
-      title: 'Success!',
-      message: 'Login successfully.',
-      bottom: true,
-    });
+    props.addTransaction(Inputs);
+    // toasts.success('Success!', 'Login successfully.', true);
   };
 
   return (
-    <RBSheet
-      ref={refForm}
-      useNativeDriver={false}
-      height={heightDimension}
-      customStyles={{
-        wrapper: {
-          backgroundColor: 'transparent',
-          zIndex: -9999,
-        },
-        draggableIcon: {
-          backgroundColor: '#000',
-          zIndex: -9999,
-        },
-        container: {
-          zIndex: 2,
-          backgroundColor:
-            (Inputs.type === 'Income' && '#00A86B') ||
-            (Inputs.type === 'Expenses' && '#FD3C4A') ||
-            '#7F3DFF',
-        },
-      }}
-      customModalProps={customModalProps}
-      customAvoidingViewProps={customAvoidingViewProps}>
-      <Appbar
-        onBack={() => refForm.current.close()}
-        title="New Transaction"
-        statusBarProps={{backgroundColor: '#c1c1c1'}}
-      />
-      <KeyboardAvoidingView style={{flex: 1}}>
+    <KeyboardAvoidingView behavior="padding">
+      <RBSheet
+        ref={refForm}
+        useNativeDriver={false}
+        height={heightDimension}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'transparent',
+          },
+          draggableIcon: {
+            backgroundColor: '#000',
+          },
+          container: {
+            backgroundColor:
+              (Inputs.type === 'Income' && '#00A86B') ||
+              (Inputs.type === 'Expenses' && '#FD3C4A') ||
+              '#7F3DFF',
+          },
+        }}
+        customModalProps={customModalProps}
+        customAvoidingViewProps={customAvoidingViewProps}>
+        <Appbar
+          onBack={() => refForm.current.close()}
+          title="New Transaction"
+          statusBarProps={{backgroundColor: '#c1c1c1'}}
+        />
         <Container style={styles.container} scrolled>
           <View style={styles.head}>
             <Texts style={styles.headText}>Transactions</Texts>
@@ -136,25 +136,27 @@ const TransactionForm = ({refForm, ...res}: Props) => {
             onChangeText={val => setInputs({...Inputs, notes: val})}
           />
 
-          <Buttons title="Save" onPress={handleSubmit} />
+          <Buttons loading={loading} title="Save" onPress={handleSubmit} />
 
-          <DatePicker
-            modal={openDate}
-            open={openDate}
-            date={Inputs.date}
-            onConfirm={date => {
-              setopenDate(false);
-              setInputs({...Inputs, date: date});
-            }}
-            onCancel={() => setopenDate(false)}
-          />
+          {openDate && (
+            <DatePicker
+              modal={openDate}
+              open={openDate}
+              date={Inputs.date}
+              onConfirm={date => {
+                setopenDate(false);
+                setInputs({...Inputs, date: date});
+              }}
+              onCancel={() => setopenDate(false)}
+            />
+          )}
         </Container>
-      </KeyboardAvoidingView>
-    </RBSheet>
+      </RBSheet>
+    </KeyboardAvoidingView>
   );
 };
 
-export default TransactionForm;
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionForm);
 
 const customModalProps: any = {
   animationType: 'slide',

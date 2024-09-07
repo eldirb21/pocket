@@ -1,6 +1,6 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
-import {Appbar, Container, Floating, Icons, Texts} from '@atoms';
+import {Appbar, Container, Floating, Icons, Spinner, Texts} from '@atoms';
 import {scale} from '@constants';
 import {ItemBudget} from '@molecules';
 import {datas, func} from '@utils';
@@ -16,11 +16,7 @@ type Props = {
 const Budget = (props: Props) => {
   const refForm = useRef<any>(null);
   const isFocused = useIsFocused();
-  const {budget} = props.budget;
-
-  // console.log('====================================');
-  // console.log(budget);
-  // console.log('====================================');
+  const {budget, loading} = props.budget;
 
   useEffect(() => {
     if (isFocused) {
@@ -49,6 +45,7 @@ const Budget = (props: Props) => {
 
   return (
     <Container>
+      <Spinner visible={loading} />
       <Appbar title="Budget" onSearch={() => {}} />
       <View
         style={{

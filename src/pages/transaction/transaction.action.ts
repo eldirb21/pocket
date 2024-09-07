@@ -24,6 +24,8 @@ const getSingleTransaction = (obj: any) => async (dispatch: any) => {
 const addTransaction = (obj: any) => async (dispatch: any) => {
   dispatchLoad(dispatch, _.ADD_TRANSACTION, []);
   const res: any = await TransactionService.create(obj);
+  // console.log('res', res);
+  
   if (res.status === 200) {
     dispatchSuccess(dispatch, _.ADD_TRANSACTION, res);
   } else {

@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
-import {fonts, heightDimension, scale, verticalScale} from '@constants';
+import {fonts, heightDimension, scale, toasts, verticalScale} from '@constants';
 import {
   Appbar,
   Buttons,
@@ -36,6 +36,7 @@ const BudgetForm = ({refForm, ...res}: Props) => {
 
   const handleSubmit = () => {
     console.log(Inputs);
+    toasts.error('asdadasd',);
   };
 
   return (

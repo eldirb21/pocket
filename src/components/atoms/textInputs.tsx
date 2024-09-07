@@ -1,4 +1,5 @@
 import {
+  KeyboardAvoidingView,
   StyleSheet,
   TextInput,
   TextInputProps,
@@ -42,45 +43,47 @@ const TextInputs: React.FC<TextInputsProps> = ({
   const [showText, setshowText] = useState(true);
   return (
     <View style={containerStyle}>
-      {title && <Texts style={textStyle}>{title}</Texts>}
-      <View style={styles.container}>
-        {type === 'input' ? (
-          <TextInput
-            secureTextEntry={secureText ? showText : false}
-            style={[
-              styles.input,
-              {color: error ? colors.error : colors.textTertiary},
-            ]}
-            keyboardType={keyboardType}
-            placeholder={placeholder}
-            value={value}
-            {...res}
-          />
-        ) : (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={onPress}
-            style={styles.btn}>
-            <Texts style={styles.text}>{value ? value : placeholder}</Texts>
-          </TouchableOpacity>
-        )}
-        {secureText && (
-          <TouchableOpacity
-            onPress={() => setshowText(!showText)}
-            activeOpacity={0.9}
-            style={styles.icon}>
-            <Icons
-              type="Ionicons"
-              name={showText ? 'eye-outline' : 'eye-off-outline'}
-              size={fonts.size.font16}
-              color={colors.textGrey}
+        <KeyboardAvoidingView>
+        {title && <Texts style={textStyle}>{title}</Texts>}
+        <View style={styles.container}>
+          {type === 'input' ? (
+            <TextInput
+              secureTextEntry={secureText ? showText : false}
+              style={[
+                styles.input,
+                {color: error ? colors.error : colors.textTertiary},
+              ]}
+              keyboardType={keyboardType}
+              placeholder={placeholder}
+              value={value}
+              {...res}
             />
-          </TouchableOpacity>
-        )}
-        {custom}
+          ) : (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={onPress}
+              style={styles.btn}>
+              <Texts style={styles.text}>{value ? value : placeholder}</Texts>
+            </TouchableOpacity>
+          )}
+          {secureText && (
+            <TouchableOpacity
+              onPress={() => setshowText(!showText)}
+              activeOpacity={0.9}
+              style={styles.icon}>
+              <Icons
+                type="Ionicons"
+                name={showText ? 'eye-outline' : 'eye-off-outline'}
+                size={fonts.size.font16}
+                color={colors.textGrey}
+              />
+            </TouchableOpacity>
+          )}
+          {custom}
+        </View>
+        {error && <Texts style={styles.error}>{error}</Texts>}
+    </KeyboardAvoidingView>
       </View>
-      {error && <Texts style={styles.error}>{error}</Texts>}
-    </View>
   );
 };
 
