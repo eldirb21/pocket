@@ -26,8 +26,12 @@ const ItemBudget = ({
   remain,
 }: Props) => {
   const progres: any = parseFloat(persen)?.toFixed(2);
+
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.card}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={[styles.card, styles.shadow]}>
       <View style={styles.title}>
         <Icons name="circle" size={14} color={'red'} />
         <Texts style={{marginLeft: 5}}>{category}</Texts>
@@ -36,8 +40,8 @@ const ItemBudget = ({
 
       <Progress.Bar
         height={moderateVerticalScale(8)}
-        progress={progres}
-        width={(widthDimension * 90) / 100}
+        progress={parseFloat(progres || 0)}
+        width={(widthDimension * 82) / 100}
         color={minus ? 'red' : 'blue'}
       />
 
@@ -53,8 +57,22 @@ const ItemBudget = ({
 export default ItemBudget;
 
 const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
   card: {
     marginBottom: 20,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFF',
   },
   title: {
     flexDirection: 'row',

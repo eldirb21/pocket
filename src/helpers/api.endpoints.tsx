@@ -14,6 +14,7 @@ const endpoint = {
   transctionDetail: (id: any) => `transction/${id}`,
   transctionList: (obj: any) =>
     `transction?page=${obj.page}&pageSize=${obj.pageSize}`,
+  totals: `total`,
 
   budgetAdd: `budget`,
   budgetEdit: `budget`,

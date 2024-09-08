@@ -5,6 +5,7 @@ import {
   editBudget,
   getListBudget,
   getSingleBudget,
+  resetBudgetAction,
 } from '@pages/budget/budget.action';
 import {
   addTransaction,
@@ -12,6 +13,8 @@ import {
   editTransaction,
   getListTransaction,
   getSingleTransaction,
+  getTotal,
+  resetTransactionAction,
 } from '@pages/transaction/transaction.action';
 
 const mapStateToProps = (state: any) => ({
@@ -29,12 +32,15 @@ const mapDispatchToProps = {
   addTransaction,
   editTransaction,
   deleteTransaction,
+  resetTransactionAction,
+  getTotal,
 
   getListBudget,
   getSingleBudget,
   addBudget,
   editBudget,
   deleteBudget,
+  resetBudgetAction,
 };
 
 export {mapStateToProps, mapDispatchToProps};

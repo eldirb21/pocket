@@ -1,5 +1,8 @@
 import {endpoint, api} from '@helpers';
 
+const getTotal = () => {
+  return api.get(endpoint.totals);
+};
 const getAll = (token: any) => {
   return api.get(endpoint.transctionList(token));
 };
@@ -21,6 +24,7 @@ const remove = (id: any) => {
 };
 
 const TransactionService = {
+  getTotal,
   getAll,
   getSingle,
   create,

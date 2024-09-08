@@ -1,11 +1,13 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
-import {Container, Floating, Texts} from '@atoms';
-import {fonts, scale} from '@constants';
-import {datas} from '@utils';
-import {ItemHomeTop, ItemTransaction} from '@molecules';
-import TransactionForm from '@pages/transaction/transactionForm';
 import {connect} from 'react-redux';
+import {useIsFocused} from '@react-navigation/native';
+
+import {func} from '@utils';
+import {ItemHomeTop, ItemTransaction} from '@molecules';
+import {fonts, heightDimension, scale} from '@constants';
+import {Container, Floating, Nodata, Texts} from '@atoms';
+import TransactionForm from '@pages/transaction/transactionForm';
 import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
 
 type Props = {
@@ -13,17 +15,31 @@ type Props = {
 };
 const Home = (props: Props) => {
   const refForm = useRef<any>(null);
+  const {transactions, totals} = props.transaction;
+  const isFocused = useIsFocused();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
+
+  const fetchData = () => {
+    props.getTotal();
+    props.getListTransaction({
+      page: 1,
+      pageSize: 10,
+    });
+  };
 
   return (
     <Container>
       <Container animated scrolled>
         <ItemHomeTop
           date="September"
-          balance={9000000000000}
-          income={20000000}
-          expences={500000}
+          balance={func.balances(totals?.totalIncomes, totals?.totalExpenses)}
+          income={totals?.totalIncomes}
+          expences={totals?.totalExpenses}
         />
 
         {/* <PieChart data={data} donut />
@@ -40,27 +56,35 @@ const Home = (props: Props) => {
           </View>
 
           <View>
-            {datas.transaction.map((item, index) => {
-              return (
-                <ItemTransaction
-                  key={index}
-                  onPress={() => props.navigation.navigate('')}
-                  subject={item.subject}
-                  desc={item.desc}
-                  nominal={item.nominal}
-                  date={item.date}
-                  type={item.type}
-                  category={item.category}
-                />
-              );
-            })}
+            {transactions?.items <= 0 ? (
+              <Nodata
+                height={heightDimension / 2}
+                title={'No Data'}
+                message={'No data transaction found'}
+              />
+            ) : (
+              transactions?.items?.map((item: any, index: any) => {
+                return (
+                  <ItemTransaction
+                    key={index}
+                    onPress={() => props.navigation.navigate('')}
+                    subject={item.subject}
+                    desc={item.desc}
+                    nominal={item.nominal}
+                    date={item.date}
+                    type={item.type}
+                    category={item.category}
+                  />
+                );
+              })
+            )}
           </View>
         </View>
       </Container>
 
       <Floating onPress={() => refForm.current.open()} />
 
-      <TransactionForm refForm={refForm} />
+      <TransactionForm refForm={refForm} refresh={fetchData} />
     </Container>
   );
 };

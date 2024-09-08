@@ -1,6 +1,14 @@
 import {FlatList, StyleSheet, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
-import {Appbar, Container, Floating, Icons, Spinner, Texts} from '@atoms';
+import {
+  Appbar,
+  Container,
+  Floating,
+  Icons,
+  Nodata,
+  Spinner,
+  Texts,
+} from '@atoms';
 import {scale} from '@constants';
 import {ItemBudget} from '@molecules';
 import {datas, func} from '@utils';
@@ -20,12 +28,15 @@ const Budget = (props: Props) => {
 
   useEffect(() => {
     if (isFocused) {
-      props.getListBudget({
-        page: 1,
-        pageSize: 10,
-      });
+      fetchData();
     }
   }, [isFocused]);
+  const fetchData = () => {
+    props.getListBudget({
+      page: 1,
+      pageSize: 10,
+    });
+  };
 
   const renderItem = ({item, index}: any) => {
     const results = func.budget(item.budgetExhausted, item.nominal);
@@ -67,10 +78,13 @@ const Budget = (props: Props) => {
           padding: scale(15),
           paddingTop: 10,
         }}
+        ListEmptyComponent={() => (
+          <Nodata title={'No Data'} message={'No data budget found'} />
+        )}
       />
       <Floating onPress={() => refForm.current.open()} />
 
-      <BudgetForm refForm={refForm} />
+      <BudgetForm refForm={refForm} refresh={fetchData} />
     </Container>
   );
 };

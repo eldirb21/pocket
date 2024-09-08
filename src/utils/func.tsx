@@ -62,7 +62,7 @@ const func = {
     }
   },
   budget(a: any, b: any) {
-    const persen = parseFloat(a) / parseFloat(b)||0;
+    const persen = parseFloat(a) / parseFloat(b) || 0;
     const remain = b - a;
     let result = {
       persen,
@@ -80,36 +80,46 @@ const func = {
   numbToRupiah(num: any, format = false) {
     if (typeof num !== 'number') return '0';
 
+    // Deteksi jika angkanya negatif
+    const isNegative = num < 0;
+    num = Math.abs(num); // Ubah ke positif sementara untuk format
+
     if (!format) {
       if (num >= 1000) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        const formatted = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return isNegative ? `-${formatted}` : formatted; // Tambahkan minus jika negatif
       } else {
-        return num.toString() || '0';
+        return isNegative ? `-${num.toString()}` : num.toString() || '0';
       }
     } else {
       let suffix = '';
       if (num >= 1_000_000_000) {
-        // Handle billions (b)
+        // Handle billions (B)
         num = num / 1_000_000_000;
         suffix = 'B';
       } else if (num >= 1_000_000) {
-        // Handle millions (m)
+        // Handle millions (M)
         num = num / 1_000_000;
         suffix = 'M';
       } else if (num >= 1_000) {
-        // Handle thousands (k)
+        // Handle thousands (K) with three decimal places
         num = num / 1_000;
         suffix = 'K';
       }
 
-      return (
-        num
-          .toFixed(1) // Keep one decimal place
-          .replace(/\.0$/, '') // Remove trailing ".0" for whole numbers
-          .toString()
-          .replace(/\B(?=(\d{3})+(?!\d))/g, '.') + suffix
-      );
+      const formatted = num
+        .toFixed(3) // Keep three decimal places
+        .replace(/\.000$/, '') // Remove trailing ".000" for whole numbers
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+      // Tambahkan tanda minus jika negatif
+      return isNegative ? `-${formatted}${suffix}` : `${formatted}${suffix}`;
     }
+  },
+  balances(totalIncomes: any, totalExpenses: any) {
+    const result = parseInt(totalIncomes || 0) - parseInt(totalExpenses || 0);
+    return result;
   },
 };
 export default func;

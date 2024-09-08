@@ -1,6 +1,6 @@
 import {FlatList, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
-import {Appbar, Container} from '@atoms';
+import {Appbar, Container, Nodata} from '@atoms';
 import {scale} from '@constants';
 import {ItemTransaction} from '@molecules';
 import {connect} from 'react-redux';
@@ -46,6 +46,9 @@ const Transaction = (props: Props) => {
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
+        ListEmptyComponent={() => (
+          <Nodata title={'No Data'} message={'No data transaction found'} />
+        )}
       />
     </Container>
   );

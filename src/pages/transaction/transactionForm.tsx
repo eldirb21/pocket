@@ -1,11 +1,5 @@
-import {
-  KeyboardAvoidingView,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {fonts, heightDimension, scale, toasts, verticalScale} from '@constants';
 import {
   Appbar,
@@ -17,142 +11,228 @@ import {
   Texts,
 } from '@atoms';
 import DatePicker from 'react-native-date-picker';
-import {func} from '@utils';
 import moment from 'moment-timezone';
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
+import {datas, func} from '@utils';
 
 type Props = {
   [x: string]: any;
   refForm?: any;
+  refresh: () => void;
 };
 
-const types = [
-  {label: 'Income', value: '1'},
-  {label: 'Expenses', value: '2'},
-];
-const categories = [
-  {label: 'Penghasilan', value: '1'},
-  {label: 'Belanja', value: '2'},
-  {label: 'Ongkos', value: '3'},
-  {label: 'Transfer', value: '4'},
-  {label: 'Education', value: '5'},
-];
-
-const TransactionForm = ({refForm, ...props}: Props) => {
-  const {loading, error} = props.transaction;
-  // console.log('props.transaction', props.transaction);
+const TransactionForm = ({refForm, refresh, ...props}: Props) => {
+  const {loading, error, actionTransaction} = props.transaction;
 
   const [openDate, setopenDate] = useState(false);
-  const [Inputs, setInputs] = useState<any>({
-    categories: '',
-    amount: '',
-    notes: '',
-    type: '',
-    createAt: new Date(),
-    date: new Date(),
-  });
+  const [openPaymentDate, setopenPaymentDate] = useState(false);
+  const [Inputs, setInputs] = useState<any>(datas.PayloadTransaction);
+
+  useEffect(() => {
+    const total_with_fee =
+      parseFloat(Inputs.nominal || 0) + parseFloat(Inputs.fee_bank || 0);
+    setInputs({...Inputs, total_with_fee});
+  }, [Inputs.nominal, Inputs.fee_bank]);
+
+  useEffect(() => {
+    if (error) {
+      toasts.error(error);
+      props.resetTransactionAction();
+    }
+    if (actionTransaction?.status === 201) {
+      toasts.success(actionTransaction?.result);
+      setTimeout(() => {
+        props.resetTransactionAction();
+        refForm.current.close();
+        setInputs(datas.PayloadTransaction);
+        refresh();
+      }, 300);
+    }
+  }, [error, actionTransaction]);
 
   const handleSubmit = () => {
-    // console.log(Inputs);
     props.addTransaction(Inputs);
-    // toasts.success('Success!', 'Login successfully.', true);
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <RBSheet
-        ref={refForm}
-        useNativeDriver={false}
-        height={heightDimension}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'transparent',
-          },
-          draggableIcon: {
-            backgroundColor: '#000',
-          },
-          container: {
-            backgroundColor:
-              (Inputs.type === 'Income' && '#00A86B') ||
-              (Inputs.type === 'Expenses' && '#FD3C4A') ||
-              '#7F3DFF',
-          },
-        }}
-        customModalProps={customModalProps}
-        customAvoidingViewProps={customAvoidingViewProps}>
-        <Appbar
-          onBack={() => refForm.current.close()}
-          title="New Transaction"
-          statusBarProps={{backgroundColor: '#c1c1c1'}}
-        />
-        <Container style={styles.container} scrolled>
-          <View style={styles.head}>
-            <Texts style={styles.headText}>Transactions</Texts>
-          </View>
-          <Dropdowns
-            containerStyle={styles.inputs}
-            title={'Types'}
-            data={types}
-            labelField="label"
-            valueField="value"
-            onChange={val => setInputs({...Inputs, type: val.label})}
-          />
-          <Dropdowns
-            containerStyle={styles.inputs}
-            title={'Categories'}
-            data={categories}
-            labelField="label"
-            valueField="value"
-            onChange={val => setInputs({...Inputs, categories: val.label})}
-          />
+    <RBSheet
+      ref={refForm}
+      height={heightDimension}
+      closeOnPressMask={true}
+      closeOnPressBack={true}
+      customStyles={{
+        wrapper: {
+          backgroundColor: 'transparent',
+        },
+        draggableIcon: {
+          backgroundColor: '#000',
+        },
+        container: {
+          backgroundColor:
+            (Inputs.type === 'Income' && '#00A86B') ||
+            (Inputs.type === 'Expenses' && '#FD3C4A') ||
+            '#7F3DFF',
+        },
+      }}
+      customModalProps={customModalProps}
+      customAvoidingViewProps={customAvoidingViewProps}>
+      <Appbar
+        onBack={() => refForm.current.close()}
+        title="New Transaction"
+        statusBarProps={{backgroundColor: '#c1c1c1'}}
+      />
+      <View style={{height: verticalScale(100)}} />
 
-          <TextInputs
-            type="button"
-            containerStyle={styles.inputs}
-            title="Date"
-            placeholder="21-04-2024 08:08"
-            editable={false}
-            value={moment(Inputs.date).format('DD-MM-yyyy h:mm')}
-            onPress={() => setopenDate(true)}
-          />
+      <Container style={styles.container} scrolled>
+        <Container style={{paddingBottom: verticalScale(160)}}>
+          <View>
+            <View style={styles.head}>
+              <Texts style={styles.headText}>Transactions</Texts>
+            </View>
 
-          <TextInputs
-            containerStyle={styles.inputs}
-            title="Amount"
-            placeholder="Amount"
-            multiline
-            value={Inputs.amount}
-            onChangeText={val => setInputs({...Inputs, amount: val})}
-          />
-
-          <TextInputs
-            containerStyle={styles.inputs}
-            title="Notes"
-            numberOfLines={2}
-            placeholder="Notes"
-            multiline
-            value={Inputs.notes}
-            onChangeText={val => setInputs({...Inputs, notes: val})}
-          />
-
-          <Buttons loading={loading} title="Save" onPress={handleSubmit} />
-
-          {openDate && (
-            <DatePicker
-              modal={openDate}
-              open={openDate}
-              date={Inputs.date}
-              onConfirm={date => {
-                setopenDate(false);
-                setInputs({...Inputs, date: date});
-              }}
-              onCancel={() => setopenDate(false)}
+            <TextInputs
+              containerStyle={styles.inputs}
+              title="Subject"
+              numberOfLines={2}
+              placeholder="Subject"
+              multiline
+              value={Inputs.subject}
+              onChangeText={val => setInputs({...Inputs, subject: val})}
             />
-          )}
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Dropdowns
+                containerStyle={[styles.inputs, {flex: 1, marginRight: 5}]}
+                title={'Types'}
+                data={datas.types}
+                labelField="label"
+                valueField="value"
+                placeholder={Inputs.type || 'select type'}
+                onChange={val => setInputs({...Inputs, type: val.label})}
+              />
+              <Dropdowns
+                containerStyle={[styles.inputs, {flex: 1, marginLeft: 5}]}
+                title={'Categories'}
+                data={datas.categories}
+                labelField="label"
+                valueField="value"
+                placeholder={Inputs.category || 'Select category'}
+                onChange={val => setInputs({...Inputs, category: val.label})}
+              />
+            </View>
+
+            <TextInputs
+              type="button"
+              containerStyle={styles.inputs}
+              title="Date"
+              placeholder="21-04-2024 08:08"
+              editable={false}
+              value={moment(Inputs.date).format('DD-MM-yyyy h:mm')}
+              onPress={() => setopenDate(true)}
+            />
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Dropdowns
+                containerStyle={[styles.inputs, {flex: 1, marginRight: 5}]}
+                title={'Payment Method'}
+                data={datas.paymentMethod}
+                labelField="label"
+                valueField="value"
+                value={Inputs.payment_method}
+                onChange={val =>
+                  setInputs({...Inputs, payment_method: val.label})
+                }
+              />
+              <TextInputs
+                type="button"
+                containerStyle={[styles.inputs, {flex: 1, marginLeft: 5}]}
+                title="Payment date"
+                placeholder="21-04-2024 08:08"
+                editable={false}
+                value={moment(Inputs.payment_date).format('DD-MM-yyyy h:mm')}
+                onPress={() => setopenPaymentDate(true)}
+              />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <TextInputs
+                containerStyle={[styles.inputs, {flex: 1, marginRight: 5}]}
+                title="Nominal"
+                placeholder="Rp."
+                multiline
+                value={Inputs.nominal}
+                onChangeText={val => setInputs({...Inputs, nominal: val})}
+              />
+              <TextInputs
+                containerStyle={[styles.inputs, {flex: 1, marginLeft: 5}]}
+                title="Fee transaction"
+                placeholder="Rp."
+                multiline
+                value={Inputs.fee_bank}
+                onChangeText={val => setInputs({...Inputs, fee_bank: val})}
+              />
+            </View>
+
+            <TextInputs
+              containerStyle={styles.inputs}
+              title="Nominal with Fee"
+              placeholder="Rp."
+              editable={false}
+              multiline
+              value={func.numbToRupiah(Inputs.total_with_fee)}
+            />
+
+            <TextInputs
+              containerStyle={styles.inputs}
+              title="Description"
+              numberOfLines={2}
+              placeholder="Description"
+              multiline
+              value={Inputs.desc}
+              onChangeText={val => setInputs({...Inputs, desc: val})}
+            />
+
+            <Buttons loading={loading} title="Save" onPress={handleSubmit} />
+
+            {(openDate || openPaymentDate) && (
+              <DatePicker
+                modal={openDate || openPaymentDate}
+                open={openDate || openPaymentDate}
+                date={Inputs.date}
+                onConfirm={date => {
+                  if (openPaymentDate) {
+                    setInputs({...Inputs, payment_date: date});
+                  } else {
+                    setInputs({...Inputs, date: date});
+                  }
+                  setopenDate(false);
+                  setopenPaymentDate(false);
+                }}
+                onCancel={() => {
+                  setopenDate(false);
+                  setopenPaymentDate(false);
+                }}
+              />
+            )}
+          </View>
         </Container>
-      </RBSheet>
-    </KeyboardAvoidingView>
+      </Container>
+    </RBSheet>
   );
 };
 
@@ -170,7 +250,6 @@ const customAvoidingViewProps = {
 const styles = StyleSheet.create({
   container: {
     padding: scale(20),
-    marginTop: verticalScale(100),
     backgroundColor: '#FFF',
     borderTopLeftRadius: scale(25),
     borderTopRightRadius: scale(25),

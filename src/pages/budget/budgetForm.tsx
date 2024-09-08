@@ -1,42 +1,47 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {fonts, heightDimension, scale, toasts, verticalScale} from '@constants';
 import {
   Appbar,
   Buttons,
   Container,
   Dropdowns,
-  Icons,
   RBSheet,
   TextInputs,
   Texts,
 } from '@atoms';
+import {connect} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
+import {datas} from '@utils';
 
 type Props = {
+  [x: string]: any;
   refForm?: any;
+  refresh: () => void;
 };
 
-const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
-];
+const BudgetForm = ({refForm, refresh, ...props}: Props) => {
+  const {loading, error, actionBudget} = props.budget;
+  const [Inputs, setInputs] = useState<any>(datas.PayloadBudget);
 
-const BudgetForm = ({refForm, ...res}: Props) => {
-  const [Inputs, setInputs] = useState<any>({
-    categories: '',
-    nominal: '',
-    notes: '',
-  });
+  useEffect(() => {
+    if (error) {
+      toasts.error(error);
+      props.resetBudgetAction();
+    }
+    if (actionBudget?.status === 201) {
+      toasts.success(actionBudget?.result);
+      setTimeout(() => {
+        props.resetBudgetAction();
+        refForm.current.close();
+        setInputs(datas.PayloadBudget);
+        refresh();
+      }, 300);
+    }
+  }, [error, actionBudget]);
 
   const handleSubmit = () => {
-    console.log(Inputs);
-    toasts.error('asdadasd',);
+    props.addBudget(Inputs);
   };
 
   return (
@@ -52,33 +57,51 @@ const BudgetForm = ({refForm, ...res}: Props) => {
         title="New Budget"
         statusBarProps={{backgroundColor: '#c1c1c1'}}
       />
+      <View style={{height: verticalScale(100)}} />
       <Container style={styles.container}>
-        <View style={styles.head}>
-          <Texts style={styles.headText}>Budget</Texts>
-        </View>
-        <Dropdowns
-          containerStyle={styles.inputs}
-          title={'Categories'}
-          data={data}
-          labelField="label"
-          valueField="value"
-          onChange={val => setInputs({...Inputs, categories: val.label})}
-        />
+        <Container scrolled style={{paddingBottom: verticalScale(225)}}>
+          <View>
+            <View style={styles.head}>
+              <Texts style={styles.headText}>Budget</Texts>
+            </View>
+            <Dropdowns
+              containerStyle={styles.inputs}
+              title={'Categories'}
+              data={datas.categories}
+              labelField="label"
+              valueField="value"
+              onChange={val => setInputs({...Inputs, category: val.label})}
+              placeholder={Inputs.category||'Select category'}
+            />
 
-        <TextInputs
-          containerStyle={styles.inputs}
-          title="Notes"
-          placeholder="Notes"
-          multiline
-        />
+            <TextInputs
+              containerStyle={styles.inputs}
+              title="Budget Nominal"
+              placeholder="Rp"
+              multiline
+              value={Inputs.nominal}
+              onChangeText={val => setInputs({...Inputs, nominal: val})}
+            />
 
-        <Buttons title="Save" onPress={handleSubmit} />
+            <TextInputs
+              containerStyle={styles.inputs}
+              title="Description"
+              placeholder="Description"
+              multiline
+              value={Inputs.desc}
+              onChangeText={val => setInputs({...Inputs, desc: val})}
+            />
+
+            <Buttons title="Save" onPress={handleSubmit} loading={loading} />
+          </View>
+        </Container>
       </Container>
     </RBSheet>
   );
 };
 
-export default BudgetForm;
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetForm);
+
 const customModalProps: any = {
   animationType: 'slide',
   statusBarTranslucent: false,
@@ -101,7 +124,6 @@ const customAvoidingViewProps = {
 const styles = StyleSheet.create({
   container: {
     padding: scale(20),
-    marginTop: verticalScale(100),
     backgroundColor: '#FFF',
     borderTopLeftRadius: scale(25),
     borderTopRightRadius: scale(25),

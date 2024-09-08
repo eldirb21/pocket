@@ -34,7 +34,14 @@ const ItemHomeTop = ({date, balance, expences, income}: Props) => {
       <View style={styles.container}>
         <View style={styles.balanceContainer}>
           <Texts>Balance</Texts>
-          <Texts style={styles.balance}>
+          <Texts
+            style={[
+              styles.balance,
+              {
+                color:
+                  parseInt(func.numbToRupiah(balance)) < 0 ? 'red' : '#000',
+              },
+            ]}>
             Rp{func.numbToRupiah(balance, true)}
           </Texts>
         </View>
@@ -56,7 +63,7 @@ const ItemHomeTop = ({date, balance, expences, income}: Props) => {
               <IcExpenses />
             </View>
             <View>
-              <Texts style={styles.label}>Income</Texts>
+              <Texts style={styles.label}>Expenses</Texts>
               <Texts style={styles.value}>
                 Rp{func.numbToRupiah(expences, true)}
               </Texts>
@@ -83,6 +90,7 @@ const styles = StyleSheet.create({
   balanceContainer: {
     marginBottom: scale(20),
     alignItems: 'center',
+    textTransform: 'lowercase',
   },
   balance: {
     fontWeight: '700',
