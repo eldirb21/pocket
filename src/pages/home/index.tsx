@@ -1,9 +1,9 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {connect} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 
-import {func} from '@utils';
+import {datas, func} from '@utils';
 import {ItemHomeTop, ItemTransaction} from '@molecules';
 import {fonts, heightDimension, scale} from '@constants';
 import {Container, Floating, Nodata, Texts} from '@atoms';
@@ -17,29 +17,38 @@ const Home = (props: Props) => {
   const refForm = useRef<any>(null);
   const {transactions, totals} = props.transaction;
   const isFocused = useIsFocused();
+  const date = new Date();
+  const [selectMonth, setSelectMonth] = useState<any>(date.getUTCMonth() + 1);
 
   useEffect(() => {
     if (isFocused) {
-      fetchData();
+      fetchData(selectMonth);
     }
-  }, [isFocused]);
+  }, [isFocused, selectMonth]);
 
-  const fetchData = () => {
-    props.getTotal();
+  const fetchData = (month: any) => {
+    props.getTotal({month});
     props.getListTransaction({
       page: 1,
       pageSize: 10,
+      month,
     });
   };
+
+  const onChangeMonth = (month: any) => {
+    setSelectMonth(month?.value);
+  };
+  const month: any = datas.months.find(month => month.value === selectMonth);
 
   return (
     <Container>
       <Container animated scrolled>
         <ItemHomeTop
-          date="September"
+          date={month?.label}
           balance={func.balances(totals?.totalIncomes, totals?.totalExpenses)}
           income={totals?.totalIncomes}
           expences={totals?.totalExpenses}
+          onChange={onChangeMonth}
         />
 
         {/* <PieChart data={data} donut />
@@ -70,7 +79,7 @@ const Home = (props: Props) => {
                     onPress={() => props.navigation.navigate('')}
                     subject={item.subject}
                     desc={item.desc}
-                    nominal={item.nominal}
+                    nominal={item.total_with_fee}
                     date={item.date}
                     type={item.type}
                     category={item.category}

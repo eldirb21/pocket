@@ -125,5 +125,14 @@ const func = {
     const result = parseInt(totalIncomes || 0) - parseInt(totalExpenses || 0);
     return result;
   },
+  queryString(params: any) {
+    const queryString = Object.entries(params)
+      .filter(([key, value]) => value !== undefined && value !== '')
+      // .map(([key, value]) => `${key}=${encodeURIComponent(value as any)}`)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+    return queryString;
+  },
 };
 export default func;

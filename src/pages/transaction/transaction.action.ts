@@ -2,9 +2,9 @@ import {dispatchError, dispatchLoad, dispatchSuccess} from '@helpers/responses';
 import {TransactionService} from '@services';
 import * as _ from './transaction.types';
 
-const getTotal = () => async (dispatch: any) => {
+const getTotal = (obj: any) => async (dispatch: any) => {
   dispatchLoad(dispatch, _.GET_TOTAL, {});
-  const res: any = await TransactionService.getTotal();
+  const res: any = await TransactionService.getTotal(obj);
   if (res.status === 200) {
     dispatchSuccess(dispatch, _.GET_TOTAL, res?.data);
   } else {

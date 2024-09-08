@@ -1,5 +1,5 @@
 import {FlatList, StyleSheet, View} from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Appbar,
   Container,
@@ -25,17 +25,38 @@ const Budget = (props: Props) => {
   const refForm = useRef<any>(null);
   const isFocused = useIsFocused();
   const {budget, loading} = props.budget;
+  const date = new Date();
+  const [selectMonth, setSelectMonth] = useState<any>(date.getUTCMonth() + 1);
 
   useEffect(() => {
     if (isFocused) {
-      fetchData();
+      fetchData(selectMonth);
     }
-  }, [isFocused]);
-  const fetchData = () => {
+  }, [isFocused, selectMonth]);
+
+  const fetchData = (month: any) => {
     props.getListBudget({
       page: 1,
       pageSize: 10,
+      month,
     });
+  };
+
+  const decreamentMounth = () => {
+    if (selectMonth > 1) {
+      setSelectMonth((prev: number) => {
+        const newMonthId = prev === 1 ? 12 : prev - 1;
+        return newMonthId;
+      });
+    }
+  };
+  const increamentMounth = () => {
+    if (selectMonth < 12) {
+      setSelectMonth((prev: number) => {
+        const newMonthId = prev === 12 ? 1 : prev + 1;
+        return newMonthId;
+      });
+    }
   };
 
   const renderItem = ({item, index}: any) => {
@@ -54,19 +75,31 @@ const Budget = (props: Props) => {
     );
   };
 
+  const month: any = datas.months.find(month => month.value === selectMonth);
   return (
     <Container>
-      <Appbar title="Budget" onSearch={() => {}} />
+      <Appbar title="Budget" />
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: 20,
+          paddingBottom: 10,
         }}>
-        <Icons name="arrow-back-ios" color={'#000'} size={20} />
-        <Texts>May</Texts>
-        <Icons name="arrow-forward-ios" color={'#000'} size={20} />
+        <Icons
+          name="arrow-back-ios"
+          color={'#000'}
+          size={20}
+          onPress={decreamentMounth}
+        />
+        <Texts>{month?.label}</Texts>
+        <Icons
+          name="arrow-forward-ios"
+          color={'#000'}
+          size={20}
+          onPress={increamentMounth}
+        />
       </View>
 
       <FlatList

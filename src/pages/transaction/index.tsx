@@ -16,12 +16,17 @@ const Transaction = (props: Props) => {
   const {transactions, loading} = props.transaction;
   useEffect(() => {
     if (isFocused) {
-      props.getListTransaction({
-        page: 1,
-        pageSize: 10,
-      });
+      fetchData();
     }
   }, [isFocused]);
+
+  const fetchData = () => {
+    props.getListTransaction({
+      page: 1,
+      pageSize: 10,
+      // search: 'Beli beras',
+    });
+  };
 
   const renderItem = ({item, index}: any) => {
     return (
@@ -37,9 +42,10 @@ const Transaction = (props: Props) => {
       />
     );
   };
+  const onSearch = (val: any) => {};
   return (
     <Container>
-      <Appbar title="Transaction" onSearch={() => {}} />
+      <Appbar title="Transaction" />
 
       <FlatList
         data={transactions?.items}

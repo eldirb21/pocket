@@ -1,7 +1,7 @@
 import {endpoint, api} from '@helpers';
 
-const getTotal = () => {
-  return api.get(endpoint.totals);
+const getTotal = (obj: any) => {
+  return api.get(endpoint.totals(obj));
 };
 const getAll = (token: any) => {
   return api.get(endpoint.transctionList(token));

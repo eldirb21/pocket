@@ -1,8 +1,8 @@
-import {StyleSheet, View} from 'react-native';
-import React from 'react';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 import {Icons, Texts} from '@atoms';
 import {colors, fonts, scale} from '@constants';
-import {func} from '@utils';
+import {datas, func} from '@utils';
 import {IcExpenses, IcIncome} from '@icons';
 
 type Props = {
@@ -10,26 +10,59 @@ type Props = {
   balance?: any;
   income?: any;
   expences?: any;
+  onChange?: (item: any) => void;
 };
 
-const ItemHomeTop = ({date, balance, expences, income}: Props) => {
+const ItemHomeTop = ({date, balance, expences, income, onChange}: Props) => {
+  const [dropdown, setdropdown] = useState(false);
+  const handleDropdown = () => setdropdown(!dropdown);
   return (
     <View>
-      <View style={styles.header}>
-        <Icons
-          type="Ionicons"
-          name="chevron-down"
-          size={fonts.size.font18}
-          color={colors.black}
-        />
-        <Texts
-          style={{
-            fontFamily: fonts.type.poppinsSemiBold,
-            fontSize: fonts.size.font14,
-            marginLeft: scale(5),
-          }}>
-          {date}
-        </Texts>
+      <View>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={handleDropdown}
+          style={styles.header}>
+          <Icons
+            type="Ionicons"
+            name="chevron-down"
+            size={fonts.size.font18}
+            color={colors.black}
+          />
+          <Texts
+            style={{
+              fontFamily: fonts.type.poppinsSemiBold,
+              fontSize: fonts.size.font14,
+              marginLeft: scale(5),
+            }}>
+            {date}
+          </Texts>
+        </TouchableOpacity>
+        {dropdown && (
+          <View style={[styles.dropdown, styles.shadow]}>
+            <ScrollView>
+              {datas.months.map((x, i) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    key={i}
+                    onPress={() => {
+                      onChange?.(x);
+                      handleDropdown();
+                    }}
+                    style={styles.dropdownItem}>
+                    <Texts>{x.label}</Texts>
+                    <Icons
+                      name="arrow-forward-ios"
+                      size={16}
+                      color={colors.textGrey}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
       </View>
       <View style={styles.container}>
         <View style={styles.balanceContainer}>
@@ -129,5 +162,34 @@ const styles = StyleSheet.create({
   value: {
     color: '#FFF',
     fontFamily: fonts.type.poppinsSemiBold,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  dropdown: {
+    backgroundColor: '#FFF',
+    position: 'absolute',
+    left: 20,
+    top: 45,
+    right: 20,
+    zIndex: 999,
+    borderRadius: 10,
+    height: 150,
+  },
+  dropdownItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderColor: colors.borderColor,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

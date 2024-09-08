@@ -1,3 +1,5 @@
+import {func} from '@utils';
+
 const endpoint = {
   login: 'auth/login',
   tokenRefresh: 'auth/token-refresh',
@@ -12,15 +14,14 @@ const endpoint = {
   transctionEdit: `transction`,
   transctionDel: (id: any) => `transction/${id}`,
   transctionDetail: (id: any) => `transction/${id}`,
-  transctionList: (obj: any) =>
-    `transction?page=${obj.page}&pageSize=${obj.pageSize}`,
-  totals: `total`,
+  transctionList: (obj: any) => `transction?${func.queryString(obj)}`,
+  totals: (obj: any) => `total?${func.queryString(obj)}`,
 
   budgetAdd: `budget`,
   budgetEdit: `budget`,
   budgetDel: (id: any) => `budget/${id}`,
   budgetDetail: (id: any) => `budget/${id}`,
-  budgetList: (obj: any) => `budget?page=${obj.page}&pageSize=${obj.pageSize}`,
+  budgetList: (obj: any) => `budget?${func.queryString(obj)}`,
 };
 
 export default endpoint;
