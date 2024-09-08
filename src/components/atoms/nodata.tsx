@@ -7,9 +7,16 @@ type Props = {
   title: any;
   message: any;
   height?: any;
+  loading?: boolean;
 };
 
-const Nodata = ({title, message, height = heightDimension / 2}: Props) => {
+const Nodata = ({
+  title,
+  message,
+  loading,
+  height = heightDimension / 2,
+}: Props) => {
+  if (loading) return null;
   return (
     <View style={{...styles.container, height}}>
       <Texts style={styles.title}>{title}</Texts>

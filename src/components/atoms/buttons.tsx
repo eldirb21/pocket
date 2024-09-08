@@ -75,8 +75,6 @@ const Buttons = (props: Props) => {
     }
   }
 
-  console.log('loading', loading);
-  
   return (
     <TouchableOpacity
       disabled={disabled || loading}

@@ -1,3 +1,5 @@
+import {IcExpenses, IcIncome} from '@icons';
+
 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const moment = require('moment-timezone');
 
@@ -44,17 +46,19 @@ const func = {
         break;
     }
   },
-  category(key: any) {
+  types(key: any) {
     switch (key) {
       case 'Income':
         return {
           color: '#00A86B',
           shadow: 'hsl(158, 100%, 85%)',
+          icon: <IcIncome />,
         };
-      case 'Expences':
+      case 'Expenses':
         return {
           color: '#FD3C4A',
           shadow: 'hsl(356, 76%, 91%)',
+          icon: <IcExpenses />,
         };
 
       default:

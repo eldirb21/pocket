@@ -1,7 +1,7 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {Icons, Texts} from '@atoms';
-import {fonts, scale} from '@constants';
+import {colors, fonts, scale} from '@constants';
 import moment from 'moment-timezone';
 import {func} from '@utils';
 
@@ -28,12 +28,12 @@ const ItemTransaction = ({
     <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.item}>
       <View
         style={{
-          backgroundColor: func.category(category)?.shadow,
-          padding: scale(10),
+          backgroundColor: func.types(type)?.shadow,
+          padding: scale(6),
           borderRadius: 10,
           marginRight: scale(10),
         }}>
-        <Icons name="shop" size={fonts.size.font18} />
+        {func.types(type)?.icon}
       </View>
       <View style={{flex: 1}}>
         <Texts style={styles.subject}>{subject}</Texts>
@@ -42,7 +42,7 @@ const ItemTransaction = ({
       <View style={styles.right}>
         <Texts
           style={{
-            color: func.category(category)?.color,
+            color: func.types(type)?.color,
             ...styles.nominal,
           }}>
           Rp.{func.numbToRupiah(nominal)}
@@ -59,7 +59,10 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: scale(10),
+    marginVertical: scale(0),
+    borderBottomWidth: 1,
+    borderColor: colors.borderColor,
+    paddingVertical: scale(15),
   },
   nominal: {
     fontFamily: fonts.type.poppinsMedium,

@@ -13,7 +13,7 @@ type Props = {
 
 const Transaction = (props: Props) => {
   const isFocused = useIsFocused();
-  const {transactions} = props.transaction;
+  const {transactions, loading} = props.transaction;
   useEffect(() => {
     if (isFocused) {
       props.getListTransaction({
@@ -47,7 +47,11 @@ const Transaction = (props: Props) => {
         renderItem={renderItem}
         contentContainerStyle={styles.list}
         ListEmptyComponent={() => (
-          <Nodata title={'No Data'} message={'No data transaction found'} />
+          <Nodata
+            loading={loading}
+            title={'No Data'}
+            message={'No data transaction found'}
+          />
         )}
       />
     </Container>

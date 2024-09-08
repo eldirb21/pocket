@@ -56,7 +56,6 @@ const Budget = (props: Props) => {
 
   return (
     <Container>
-      <Spinner visible={loading} />
       <Appbar title="Budget" onSearch={() => {}} />
       <View
         style={{
@@ -79,7 +78,11 @@ const Budget = (props: Props) => {
           paddingTop: 10,
         }}
         ListEmptyComponent={() => (
-          <Nodata title={'No Data'} message={'No data budget found'} />
+          <Nodata
+            loading={loading}
+            title={'No Data'}
+            message={'No data budget found'}
+          />
         )}
       />
       <Floating onPress={() => refForm.current.open()} />
