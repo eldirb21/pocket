@@ -76,7 +76,7 @@ const Home = (props: Props) => {
                 return (
                   <ItemTransaction
                     key={index}
-                    onPress={() => props.navigation.navigate('')}
+                    // onPress={() => props.navigation.navigate('')}
                     subject={item.subject}
                     desc={item.desc}
                     nominal={item.total_with_fee}

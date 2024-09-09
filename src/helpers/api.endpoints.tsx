@@ -2,13 +2,14 @@ import {func} from '@utils';
 
 const endpoint = {
   login: 'auth/login',
+  logout:'auth/users/logout',
   tokenRefresh: 'auth/token-refresh',
   forgotPassword: 'auth/forgot-password',
   resetPassword: (token: any) => `auth/reset-password/${token}`,
   register: 'auth/register',
-  editProfile: 'auth/users/edit-profile',
+  editProfile: (id: any) => `auth/users/profile-edit/${id}`,
   changePassword: 'auth/users/change-password',
-  myProfile: (token: any) => `auth/users/profile/${token}`,
+  myProfile: `auth/users/profile`,
 
   transctionAdd: `transction`,
   transctionEdit: `transction`,

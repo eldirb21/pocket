@@ -70,7 +70,7 @@ const Budget = (props: Props) => {
         nominal={item.nominal}
         persen={results.persen}
         remain={results.remain}
-        onPress={() => {}}
+        // onPress={() => {}}
       />
     );
   };

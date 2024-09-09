@@ -52,5 +52,39 @@ const datas = {
     {value: 11, label: 'November'},
     {value: 12, label: 'December'},
   ],
+  menuProfile: [
+    // {
+    //   icon: 'wallet-outline',
+    //   label: 'Account',
+    //   color: '#1a9e08',
+    //   background: 'hsl(113, 95%, 93%)',
+    // },
+    {
+      type: 'AntDesign',
+      icon: 'upload',
+      label: 'Export Data',
+      color: '#081f9e',
+      background: 'hsl(231, 95%, 93%)',
+    },
+    {
+      icon: 'language',
+      label: 'Language',
+      color: '#9e9e08',
+      background: 'hsl(60, 95%, 93%)',
+    },
+    {
+      icon: 'moon-outline',
+      label: 'Mode',
+      color: '#8c089e',
+      background: 'hsl(293, 95%, 93%)',
+    },
+    {
+      type: 'AntDesign',
+      icon: 'logout',
+      label: 'Logout',
+      color: '#9e0808',
+      background: 'hsl(0, 95%, 93%)',
+    },
+  ],
 };
 export default datas;

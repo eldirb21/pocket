@@ -1,4 +1,4 @@
-import {doLogon, register} from '@pages/auth/auth.action';
+import {doLogon, doLogout, register} from '@pages/auth/auth.action';
 import {
   addBudget,
   deleteBudget,
@@ -7,6 +7,7 @@ import {
   getSingleBudget,
   resetBudgetAction,
 } from '@pages/budget/budget.action';
+import {editProfile, getProfile, resetActions} from '@pages/profile/profile.action';
 import {
   addTransaction,
   deleteTransaction,
@@ -21,11 +22,17 @@ const mapStateToProps = (state: any) => ({
   logon: state.authReducers,
   budget: state.budgetReducer,
   transaction: state.transactionReducer,
+  profile: state.profileReducer,
 });
 
 const mapDispatchToProps = {
   doLogon,
   register,
+  doLogout,
+
+  getProfile,
+  editProfile,
+  resetActions,
 
   getListTransaction,
   getSingleTransaction,

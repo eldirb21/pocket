@@ -1,5 +1,6 @@
 export const REGIST = 'REGIST';
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const TOKEN_REFRESH = 'TOKEN_REFRESH';
 export const FORGOT_PASS = 'FORGOT_PASS';
 export const RESET_PASS = 'RESET_PASS';

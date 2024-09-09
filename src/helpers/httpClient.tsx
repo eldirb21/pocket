@@ -8,6 +8,7 @@ const securedInstance = async (
   body?: any,
 ) => {
   const token = await localstore.getStore('token');
+
   return new Promise((resolve, reject) => {
     fetchMethod(url, method, body, {
       Authorization: `Bearer ${token}`,

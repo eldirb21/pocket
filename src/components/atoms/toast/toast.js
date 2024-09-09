@@ -1,4 +1,4 @@
-import {verticalScale} from '@constants';
+import {colors, verticalScale} from '@constants';
 import React, {Component} from 'react';
 import {
   Animated,
@@ -273,10 +273,11 @@ class Toast extends Component {
       <Modal testID="Modal" transparent visible={modalVisible}>
         {starting && (
           <StatusBar
-            hidden={statusBarHidden}
-            animated={statusBarAnimation}
-            translucent={statusBarTranslucent}
-            barStyle={statusBarType}
+            // hidden={statusBarHidden}
+            // animated={statusBarAnimation}
+            // translucent={statusBarTranslucent}
+            // barStyle={statusBarType}
+            backgroundColor={backgroundColor || colors.gray}
           />
         )}
         <Animated.View

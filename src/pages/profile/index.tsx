@@ -1,17 +1,56 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import {Appbar, Container, Icons, Texts} from '@atoms';
+import React, {useEffect} from 'react';
+import {Appbar, Container, Icons, Spinner, Texts} from '@atoms';
 import {Avatar} from '@rneui/themed';
-import {colors, fonts, scale} from '@constants';
+import {colors, fonts, scale, toasts} from '@constants';
+import {datas} from '@utils';
+import {connect, useDispatch} from 'react-redux';
+import {mapDispatchToProps, mapStateToProps} from '@stores/store.selector';
+import {useIsFocused} from '@react-navigation/native';
 
 type Props = {
   [x: string]: any;
 };
 
 const Profile = (props: Props) => {
+  const {logon, logoutStatus, loading: logoutLoading} = props.logon;
+  const {profile, loading, error} = props.profile;
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchData();
+    }
+  }, [isFocused]);
+  const fetchData = () => props.getProfile();
+
+  useEffect(() => {
+    if (logoutStatus) {
+      toasts.success('Logout Successfully');
+      dispatch({type: 'RESET_REDUCER'});
+      setTimeout(() => {
+        props.navigation.replace('AuthEmail');
+      }, 300);
+    }
+  }, [logoutStatus]);
+
+  const handlerMenu = (item: any) => {
+    if (item.label === 'Logout') {
+      props.doLogout();
+    } else {
+      props.navigation.navigate(item.label);
+    }
+  };
+
   return (
     <Container>
-      <Appbar title="Profile" centered onEdit={() => {}} />
+      <Spinner visible={logoutLoading} />
+      <Appbar
+        title="Profile"
+        centered
+        onEdit={() => props.navigation.navigate('ProfileEdit')}
+      />
 
       <View
         style={{
@@ -40,67 +79,36 @@ const Profile = (props: Props) => {
             style={{
               fontWeight: '700',
               marginBottom: 5,
+              textTransform: 'capitalize',
             }}>
-            Tom Cruise
+            {profile?.name}
           </Texts>
           <Texts
             style={{
               color: colors.textGrey,
             }}>
-            082342424223343
+            {profile?.phone}
           </Texts>
         </View>
       </View>
 
-      <View
-        style={{
-          backgroundColor: colors.gray,
-          flex: 1,
-          padding: scale(20),
-          paddingTop: 0,
-        }}>
-        {[
-          {
-            icon: 'wallet-outline',
-            label: 'Account',
-          },
-          {
-            type: 'AntDesign',
-            icon: 'upload',
-            label: 'Export Data',
-          },
-          {
-            icon: 'language',
-            label: 'Language',
-          },
-          {
-            icon: 'moon-outline',
-            label: 'Mode',
-          },
-          {type: 'AntDesign', icon: 'logout', label: 'Logout'},
-        ].map((item, index) => {
+      <View style={styles.menu}>
+        {datas.menuProfile.map((item, index) => {
           return (
             <TouchableOpacity
-              onPress={() => props.navigation.navigate(item.label)}
-              key={index}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: scale(10),
-                borderBottomWidth: 1,
-                borderColor: colors.borderColor,
-              }}>
+              onPress={() => handlerMenu(item)}
+              style={styles.menuItem}
+              key={index}>
               <View
                 style={{
-                  backgroundColor: 'grey',
-                  padding: scale(10),
-                  borderRadius: 10,
-                  marginRight: scale(10),
+                  backgroundColor: item.background,
+                  ...styles.iconContainer,
                 }}>
                 <Icons
                   type={item?.type || 'Ionicons'}
                   name={item.icon}
                   size={fonts.size.font20}
+                  color={item.color}
                 />
               </View>
               <Texts>{item.label}</Texts>
@@ -112,6 +120,25 @@ const Profile = (props: Props) => {
   );
 };
 
-export default Profile;
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  menu: {
+    backgroundColor: colors.gray,
+    flex: 1,
+    padding: scale(20),
+    paddingTop: 0,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: scale(10),
+    borderBottomWidth: 1,
+    borderColor: colors.borderColor,
+  },
+  iconContainer: {
+    padding: scale(10),
+    borderRadius: 10,
+    marginRight: scale(10),
+  },
+});

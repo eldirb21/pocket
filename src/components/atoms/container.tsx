@@ -52,19 +52,19 @@ const Container = (props: Props) => {
       )}
       {scrolled ? (
         <KeyboardAvoidingView
-          style={{flexGrow: 1,zIndex:999}}
+          style={{flexGrow: 1,flex:1, zIndex: 999}}
           behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
           <Animated.ScrollView
             onScroll={onScroll}
-            contentContainerStyle={[styles.scrolled, style]}
+            contentContainerStyle={[styles.scrolled]}
             showsVerticalScrollIndicator={false}
             refreshControl={refreshControl}
             onMomentumScrollEnd={onEndReached}
             scrollEventThrottle={scrollEventThrottle}
             nestedScrollEnabled={nestedScrollEnabled}
             keyboardShouldPersistTaps="always">
-            <View>{children}</View>
+            <View style={style}>{children}</View>
           </Animated.ScrollView>
         </KeyboardAvoidingView>
       ) : (
@@ -79,11 +79,10 @@ export default Container;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: colors.white,
   },
   scrolled: {
     flexGrow: 1,
     backgroundColor: colors.white,
-    zIndex:999
+    zIndex: 999,
   },
 });

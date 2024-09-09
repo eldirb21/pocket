@@ -10,6 +10,7 @@ import Profile from '@pages/profile';
 import Budget from '@pages/budget';
 import Transaction from '@pages/transaction';
 import Account from '@pages/profile/account';
+import ProfileEdit from '@pages/profile/profileEdit';
 
 const tabs = [
   {
@@ -62,6 +63,10 @@ const nav = [
   {
     path: 'Account',
     component: Account,
+  },
+  {
+    path: 'ProfileEdit',
+    component: ProfileEdit,
   },
 ];
 

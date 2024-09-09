@@ -1,26 +1,27 @@
-import * as _ from './auth.types';
+import * as _ from './profile.types';
 
 const initialState = {
   loading: false,
-  logon: null,
+  profile: null,
+  profileStatus: null,
   error: null,
 };
 
 export default (state = initialState, actions: any) => {
   switch (actions.type) {
-    case _.REGIST:
+    case _.GET_PROFILE:
       return {
         ...state,
         loading: actions.load,
-        logon: actions.payload,
-        error: actions.error?.errors || null,
+        profile: actions.payload,
       };
-    case _.LOGIN:
+
+    case _.EDIT_PROFILE:
       return {
         ...state,
         loading: actions.load,
-        logon: actions.payload,
-        error: actions.error?.errors || null,
+        profileStatus: actions.payload,
+        error: actions.error || null,
       };
     default:
       return state;

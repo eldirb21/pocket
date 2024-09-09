@@ -33,7 +33,7 @@ const AuthEmail = (props: Props) => {
         props.navigation.replace('NavTabs');
       }, 800);
     }
-    if (!loading && logon?.status !== 200) {
+    if (!loading && logon !== null && logon?.status !== 200) {
       toasts.error(error, 'Login Failed.');
     }
   }, [loading, logon?.status]);
